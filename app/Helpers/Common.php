@@ -2,7 +2,6 @@
 use App\Models\Setting;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Request;
-use App\Services\ApiAuthService;
 
 if(!function_exists('loadCompanySettings')){
     function loadCompanySettings(){

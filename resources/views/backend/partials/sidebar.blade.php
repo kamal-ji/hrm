@@ -18,7 +18,11 @@
                 <i class="isax isax-add"></i>
             </a>
             <ul class="dropdown-menu dropdown-menu-start">
-                <!-- Keep existing member actions -->
+                <li>
+                    <a href="{{ route('business.create') }}" class="dropdown-item d-flex align-items-center">
+                        <i class="isax isax-user-add me-2"></i>Add New Business
+                    </a>
+                </li>
                 <li>
                     <a href="{{ route('members.create') }}" class="dropdown-item d-flex align-items-center">
                         <i class="isax isax-user-add me-2"></i>Add New Member
@@ -134,15 +138,12 @@
                         <ul>
                             <li class="submenu">
                                 <a href="javascript:void(0);" class="">
-                                    <i class="isax isax-building-4"></i><span>Companies</span>
+                                    <i class="isax isax-building-4"></i><span>Business</span>
                                     <span class="menu-arrow"></span>
                                 </a>
                                 <ul>
-                                    <li><a href="" class="">All Companies</a></li>
-                                    <li><a href="" class="">Add New Company</a></li>
-                                    <li><a href="" class="">Active Companies</a></li>
-                                    <li><a href="" class="">Inactive Companies</a></li>
-                                    <li><a href="" class="">Pending Approvals</a></li>
+                                    <li><a href="{{ route('business.index') }}" class="">All Businesses</a></li>
+                                    <li><a href="{{ route('business.create') }}" class="">Add New Business</a></li>
                                 </ul>
                             </li>
                         </ul>

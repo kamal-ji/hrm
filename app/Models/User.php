@@ -2,24 +2,16 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
-use App\Models\BinaryTree;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasRoles;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'role_id',
         'user_id',
@@ -28,18 +20,18 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'first_name',        // Added
-        'last_name',         // Added
-        'image',             // Added
-        'mobile',            // Added
-        'address1',          // Added
-        'address2',          // Added
-        'city',              // Added
-        'zip', 
-        'countryid',              // Added
-        'regionid',          // Added
-        'dob',               // Added
-        'anniversary',       // Added
+        'first_name',
+        'last_name',
+        'image',
+        'mobile',
+        'address1',
+        'address2',
+        'city',
+        'zip',
+        'countryid',
+        'regionid',
+        'dob',
+        'anniversary',
         'status',
         'registration_type',
         'approved_by',
@@ -49,21 +41,11 @@ class User extends Authenticatable
 
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -73,7 +55,6 @@ class User extends Authenticatable
         ];
     }
 
-     // Scopes for easy filtering
     public function scopeActive($query)
     {
         return $query->where('status', 'active');
@@ -98,6 +79,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo(State::class, 'regionid');
     }
+
+    public function business()
+    {
+        return $this->hasOne(Business::class, 'owner_id');
+    }
+
     public function getProfileImageAttribute()
     {
         return $this->image
@@ -105,23 +92,18 @@ class User extends Authenticatable
             : asset('assets/backend/img/profiles/avatar-01.jpg');
     }
 
-    // Relationships
-       
-    
-
-     // Get active sponsors only (for dropdown)
     public function scopeActiveSponsors($query)
     {
         return $query->role('member')
             ->where('status', 'active')
             ->whereNotNull('approved_at');
     }
-   // Get full name
+
     public function getFullNameAttribute()
     {
         return $this->first_name . ' ' . $this->last_name;
     }
-    // Get sponsor info
+
     public function getSponsorInfoAttribute()
     {
         if ($this->sponsor) {
@@ -130,34 +112,32 @@ class User extends Authenticatable
         return 'No Sponsor';
     }
 
-    // Generate member ID (optional but useful for MLM)
     public static function generateMemberId()
     {
         $prefix = 'MEM';
         $lastMember = self::role('member')->orderBy('id', 'desc')->first();
-        
+
         $nextNumber = $lastMember ? intval(substr($lastMember->member_id, 3)) + 1 : 1;
         return $prefix . str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
     }
 
     public static function generateReferralCode()
-{
-    $prefix = 'BHU';
+    {
+        $prefix = 'BHU';
 
-    do {
-        $code = $prefix . strtoupper(Str::random(6));
-    } while (self::where('referral_code', $code)->exists());
+        do {
+            $code = $prefix . strtoupper(Str::random(6));
+        } while (self::where('referral_code', $code)->exists());
 
-    return $code;
-}
+        return $code;
+    }
 
-   public static function generateemployeeId()
+    public static function generateemployeeId()
     {
         $prefix = 'EMP';
         $lastEmployee = self::role('employee')->orderBy('id', 'desc')->first();
-        
+
         $nextNumber = $lastEmployee ? intval(substr($lastEmployee->employee_id, 3)) + 1 : 1;
         return $prefix . str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
     }
-
 }

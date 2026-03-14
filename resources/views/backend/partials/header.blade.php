@@ -6,18 +6,13 @@
     // Profile Image
     $profileImage = $user->profile_image;
 
-    // Cart / Wishlist
-    $homeClient = getHomeClient();
+    $cartCount = 0;
+    $wishlistCount = 0;
+    $currency = '$';
 
-    $cartCount     = $homeClient['data']['cart'] ?? 0;
-    $wishlistCount = $homeClient['data']['wishlist'] ?? 0;
-    $currency      = $homeClient['data']['currency'] ?? '$';
-
-   
-     $logo = !empty(get('company_logo'))
-    ? asset('storage/' . get('company_logo'))
-    : asset('assets/backend/img/logo.svg');
-
+    $logo = !empty(get('company_logo'))
+        ? asset('storage/' . get('company_logo'))
+        : asset('assets/backend/img/logo.svg');
 @endphp
 
 <div class="header">
@@ -26,10 +21,10 @@
         <!-- Logo -->
         <div class="header-left">
             <a href="{{ route('dashboard') }}" class="logo">
-                <img src="{{  $logo }}" alt="{{ $user->name }}">
+                <img src="{{ $logo }}" alt="{{ $user->name }}">
             </a>
             <a href="{{ route('dashboard') }}" class="dark-logo">
-                <img src="{{  $logo }}" alt="{{ $user->name }}">
+                <img src="{{ $logo }}" alt="{{ $user->name }}">
             </a>
         </div>
 
@@ -45,9 +40,9 @@
                 <div class="me-auto d-flex align-items-center">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb breadcrumb-divide mb-0">
-                            @foreach(generateBreadcrumbs() as $breadcrumb)
+                            @foreach (generateBreadcrumbs() as $breadcrumb)
                                 <li class="breadcrumb-item d-flex align-items-center">
-                                    @if($loop->last)
+                                    @if ($loop->last)
                                         <span class="active">{{ $breadcrumb['title'] }}</span>
                                     @else
                                         <a href="{{ $breadcrumb['url'] }}">
@@ -63,7 +58,7 @@
 
                 <div class="d-flex align-items-center">
 
-                   
+
 
 
                     <!-- Theme Toggle -->
@@ -88,7 +83,8 @@
                                 <div>
                                     <h6 class="mb-0">{{ $user->name }}</h6>
                                     <small class="text-muted">
-                                        {{ $user->is_superadmin ? 'Super Admin' : $user->getRoleNames()[0] }}
+                                        @php $userRoles = $user->getRoleNames(); @endphp
+                                        {{ $userRoles[0] ?? 'User' }}
                                     </small>
                                 </div>
                             </div>
