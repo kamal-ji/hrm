@@ -1,14 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\Web\AuthController;
+use App\Http\Controllers\Backend\BusinessController;
 use App\Http\Controllers\Backend\DashboardController;
-use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\EmployeeController;
 use App\Http\Controllers\Backend\MemberController;
-use App\Http\Controllers\Backend\BusinessController;
+use App\Http\Controllers\Backend\ProfileController;
+use App\Http\Controllers\Backend\StaffController;
+use App\Http\Controllers\Backend\ImpersonationController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\Web\AuthController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 
@@ -29,7 +30,10 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Admin routes
-Route::middleware(['auth', 'role:admin|member|employee'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'role:admin|member|employee|staff|business_owner'])->prefix('admin')->group(function () {
+    Route::get('/impersonate/stop', [ImpersonationController::class, 'stopImpersonation'])->name('impersonate.stop');
+    Route::get('/impersonate/{user}', [ImpersonationController::class, 'impersonate'])->name('impersonate.start');
+    
     // Company settings
     Route::get('/profile/company-setting', [ProfileController::class, 'Companysetting'])->name('profile.company-setting');
     Route::post('/profile/company-setting', [ProfileController::class, 'SaveCompanysetting'])->name('save.companysettings');
@@ -44,6 +48,15 @@ Route::middleware(['auth', 'role:admin|member|employee'])->prefix('admin')->grou
         Route::post('/', [BusinessController::class, 'store'])->name('business.store');
         Route::get('/{id}/edit', [BusinessController::class, 'edit'])->name('business.edit');
         Route::put('/{id}', [BusinessController::class, 'update'])->name('business.update');
+    });
+
+    // Staff Routes
+    Route::prefix('staff')->group(function () {
+        Route::get('/', [StaffController::class, 'index'])->name('staff.index');
+        Route::get('/create', [StaffController::class, 'create'])->name('staff.create');
+        Route::post('/', [StaffController::class, 'store'])->name('staff.store');
+        Route::get('/{id}/edit', [StaffController::class, 'edit'])->name('staff.edit');
+        Route::put('/{id}', [StaffController::class, 'update'])->name('staff.update');
     });
 
     // Members Routes

@@ -12,11 +12,18 @@ use Yajra\DataTables\Facades\DataTables;
 
 class BusinessController extends Controller
 {
-    public function index(Request $request) {
-        if($request->ajax()){
+    public function index(Request $request)
+    {
+        if ($request->ajax()) {
             return DataTables::of(Business::with('user'))
-                ->addColumn('actions', function($business) {
-                    return '<a href="'.route('business.edit', $business->owner_id).'" class="btn btn-sm btn-primary">Edit</a>';
+                ->addColumn('actions', function ($business) {
+                    $buttons = '<a href="' . route('business.edit', $business->owner_id) . '" class="btn btn-sm btn-primary">Edit</a>';
+
+                    if (auth()->user()->hasRole('admin')) {
+                        $buttons .= '<a href="' . route('impersonate.start', $business->owner_id) . '" class="btn btn-sm btn-warning">Impersonate</a>';
+                    }
+
+                    return $buttons;
                 })
                 ->rawColumns(['actions'])
                 ->make(true);
@@ -25,17 +32,20 @@ class BusinessController extends Controller
         return view('backend.business.index');
     }
 
-    public function create() {
+    public function create()
+    {
         return view('backend.business.create');
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         $user = User::with('business')->findOrFail($id);
         $business = $user->business;
         return view('backend.business.edit', compact('user', 'business'));
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -46,12 +56,9 @@ class BusinessController extends Controller
             'status' => 'required|in:active,inactive',
             'business_name' => 'required|string|max:255',
             'business_type' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'subscription' => 'required|in:trial,active,expired,cancelled',
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json([
                 'success' => false,
                 'message' => 'Validation failed',
@@ -60,7 +67,7 @@ class BusinessController extends Controller
         }
 
         $image = null;
-        if($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
             $image = $request->file('image')->store('businesses', 'public');
         }
 
@@ -74,14 +81,60 @@ class BusinessController extends Controller
             'status' => $request->status,
         ]);
 
-        Business::create([
-            'owner_id' => $user->id,
-            'business_name' => $request->business_name,
-            'business_type' => $request->business_type,
-            'address' => $request->address,
-            'city' => $request->city,
-            'subscription' => $request->subscription,
+        $businessData = $request->only([
+            'business_name',
+            'business_type',
+            'industry_type',
+            'business_category',
+            'number_of_employees',
+
+            'alternate_mobile',
+            'designation',
+
+            'address_line_1',
+            'address_line_2',
+            'city',
+            'state',
+            'pincode',
+            'country',
+
+            'gst_number',
+            'pan_number',
+            'business_registration_number',
+
+            'subscription_plan',
+            'billing_cycle',
+
+            'payment_method',
+            'invoice_email',
+
+            'salary_cycle',
+            'salary_payment_date',
+            'working_days_per_month',
+            'default_shift_time',
+
+            'sms_notifications',
+            'whatsapp_alerts',
+            'email_alerts',
+
+            'max_employees_allowed',
+            'current_employees',
+
+            'upgrade_plan_option',
+
+            'allow_upi',
+            'allow_card',
+            'allow_netbanking',
+            'allow_wallet',
+            'allow_razorpay',
+            'allow_cashfree',
+            'allow_phonepe_pg'
         ]);
+
+        $businessData['owner_id'] = $user->id;
+        Business::create($businessData);
+
+        $user->assignRole('business_owner');
 
         return response()->json([
             'success' => true,
@@ -90,16 +143,17 @@ class BusinessController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id) {
-        $user = User::with('user')->find($id);
+    public function update(Request $request, $id)
+    {
+        $user = User::with('business')->find($id);
 
-        if(!$user) {
+        if (!$user) {
             return response()->json([
                 'success' => false,
                 'message' => 'User not found'
             ], 404);
         }
-        
+
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -110,12 +164,9 @@ class BusinessController extends Controller
             'status' => 'required|in:active,inactive',
             'business_name' => 'required|string|max:255',
             'business_type' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'subscription' => 'required|in:trial,active,expired,cancelled',
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json([
                 'success' => false,
                 'message' => 'Validation failed',
@@ -125,7 +176,7 @@ class BusinessController extends Controller
 
         $image = $user->image;
 
-        if($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
             $image = $request->file('image')->store('businesses', 'public');
         }
 
@@ -139,13 +190,57 @@ class BusinessController extends Controller
             'status' => $request->status,
         ]);
 
-        $user->business->update([
-            'business_name' => $request->business_name,
-            'business_type' => $request->business_type,
-            'address' => $request->address,
-            'city' => $request->city,
-            'subscription' => $request->subscription,
+        $businessData = $request->only([
+            'business_name',
+            'business_type',
+            'industry_type',
+            'business_category',
+            'number_of_employees',
+
+            'alternate_mobile',
+            'designation',
+
+            'address_line_1',
+            'address_line_2',
+            'city',
+            'state',
+            'pincode',
+            'country',
+
+            'gst_number',
+            'pan_number',
+            'business_registration_number',
+
+            'subscription_plan',
+            'billing_cycle',
+
+            'payment_method',
+            'invoice_email',
+
+            'salary_cycle',
+            'salary_payment_date',
+            'working_days_per_month',
+            'default_shift_time',
+
+            'sms_notifications',
+            'whatsapp_alerts',
+            'email_alerts',
+
+            'max_employees_allowed',
+            'current_employees',
+
+            'upgrade_plan_option',
+
+            'allow_upi',
+            'allow_card',
+            'allow_netbanking',
+            'allow_wallet',
+            'allow_razorpay',
+            'allow_cashfree',
+            'allow_phonepe_pg'
         ]);
+
+        $user->business->update($businessData);
 
         return response()->json([
             'success' => true,

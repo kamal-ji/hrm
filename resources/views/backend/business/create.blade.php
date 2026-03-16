@@ -21,14 +21,16 @@
                                 <div class="row gx-3">
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">First Name <span class="text-danger ms-1">*</span></label>
+                                            <label class="form-label">First Name <span
+                                                    class="text-danger ms-1">*</span></label>
                                             <input type="text" class="form-control" name="first_name">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Last Name <span class="text-danger ms-1">*</span></label>
+                                            <label class="form-label">Last Name <span
+                                                    class="text-danger ms-1">*</span></label>
                                             <input type="text" class="form-control" name="last_name">
                                         </div>
                                     </div>
@@ -49,7 +51,8 @@
 
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Password <span class="text-danger ms-1">*</span></label>
+                                            <label class="form-label">Password <span
+                                                    class="text-danger ms-1">*</span></label>
                                             <input type="password" class="form-control" name="password">
                                         </div>
                                     </div>
@@ -76,43 +79,239 @@
                                 <div class="row gx-3">
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Business Name <span class="text-danger ms-1">*</span></label>
+                                            <label class="form-label">Business Name <span
+                                                    class="text-danger ms-1">*</span></label>
                                             <input type="text" class="form-control" name="business_name">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Business Type <span class="text-danger ms-1">*</span></label>
+                                            <label class="form-label">Business Type <span
+                                                    class="text-danger ms-1">*</span></label>
                                             <input type="text" class="form-control" name="business_type">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Address <span class="text-danger ms-1">*</span></label>
-                                            <input type="text" class="form-control" name="address">
+                                            <label class="form-label">Industry Type</label>
+                                            <input type="text" class="form-control" name="industry_type">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">City <span class="text-danger ms-1">*</span></label>
-                                            <input type="text" class="form-control" name="city">
+                                            <label class="form-label">Business Category</label>
+                                            <input type="text" class="form-control" name="business_category">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Subscription <span class="text-danger ms-1">*</span></label>
-                                            <select class="form-control" name="subscription">
-                                                <option value="trial">Trial</option>
-                                                <option value="active">Active</option>
-                                                <option value="expired">Expired</option>
-                                                <option value="cancelled">Cancelled</option>
+                                            <label class="form-label">Number of Employees</label>
+                                            <input type="number" class="form-control" name="number_of_employees">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Alternate Mobile</label>
+                                            <input type="text" class="form-control" name="alternate_mobile">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Designation</label>
+                                            <input type="text" class="form-control" name="designation">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h6 class="mt-4">Address Information</h6>
+
+                                <div class="row gx-3">
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Address Line 1</label>
+                                            <input type="text" class="form-control" name="address_line_1">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Address Line 2</label>
+                                            <input type="text" class="form-control" name="address_line_2">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">State</label>
+                                            <input type="text" class="form-control" name="state">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Pincode</label>
+                                            <input type="text" class="form-control" name="pincode">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Country</label>
+                                            <input type="text" class="form-control" name="country" value="India">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <h6 class="mt-4">Tax & Registration</h6>
+
+                                <div class="row gx-3">
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">GST Number</label>
+                                            <input type="text" class="form-control" name="gst_number">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">PAN Number</label>
+                                            <input type="text" class="form-control" name="pan_number">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Business Registration Number</label>
+                                            <input type="text" class="form-control"
+                                                name="business_registration_number">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <h6 class="mt-4">Subscription & Billing</h6>
+
+                                <div class="row gx-3">
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Subscription Plan</label>
+                                            <input type="text" class="form-control" name="subscription_plan">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Billing Cycle</label>
+                                            <select class="form-control" name="billing_cycle">
+                                                <option value="monthly">Monthly</option>
+                                                <option value="yearly">Yearly</option>
                                             </select>
                                         </div>
                                     </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Payment Method</label>
+                                            <input type="text" class="form-control" name="payment_method">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Invoice Email</label>
+                                            <input type="email" class="form-control" name="invoice_email">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <h6 class="mt-4">Salary Settings</h6>
+
+                                <div class="row gx-3">
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Salary Cycle</label>
+                                            <select class="form-control" name="salary_cycle">
+                                                <option value="monthly">Monthly</option>
+                                                <option value="weekly">Weekly</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Salary Payment Date</label>
+                                            <input type="number" class="form-control" name="salary_payment_date">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Working Days Per Month</label>
+                                            <input type="number" class="form-control" name="working_days_per_month">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Default Shift Time</label>
+                                            <input type="text" class="form-control" name="default_shift_time">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <h6 class="mt-4">Notifications</h6>
+
+                                <div class="row gx-3">
+
+                                    <div class="col-md-3">
+                                        <label><input type="checkbox" name="sms_notifications" value="1" checked>
+                                            SMS</label>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label><input type="checkbox" name="whatsapp_alerts" value="1" checked>
+                                            WhatsApp</label>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label><input type="checkbox" name="email_alerts" value="1" checked>
+                                            Email</label>
+                                    </div>
+
+                                </div>
+
+                                <h6 class="mt-4">Payment Gateways</h6>
+
+                                <div class="row gx-3">
+
+                                    <div class="col-md-3"><label><input type="checkbox" name="allow_upi" value="1">
+                                            UPI</label></div>
+                                    <div class="col-md-3"><label><input type="checkbox" name="allow_card"
+                                                value="1"> Card</label></div>
+                                    <div class="col-md-3"><label><input type="checkbox" name="allow_netbanking"
+                                                value="1"> Net Banking</label></div>
+                                    <div class="col-md-3"><label><input type="checkbox" name="allow_wallet"
+                                                value="1"> Wallet</label></div>
+                                    <div class="col-md-3"><label><input type="checkbox" name="allow_razorpay"
+                                                value="1"> Razorpay</label></div>
+                                    <div class="col-md-3"><label><input type="checkbox" name="allow_cashfree"
+                                                value="1"> Cashfree</label></div>
+                                    <div class="col-md-3"><label><input type="checkbox" name="allow_phonepe_pg"
+                                                value="1"> PhonePe PG</label></div>
+
                                 </div>
 
                                 <div class="d-flex align-items-center justify-content-between pt-4 border-top">
@@ -159,7 +358,7 @@
                     success: function(response) {
                         if (response.success) {
                             showSuccess(response.message ||
-                            'Business created successfully');
+                                'Business created successfully');
                             window.location.href = response.redirect_url
                         } else {
                             showError(response.message || 'Something went wrong');

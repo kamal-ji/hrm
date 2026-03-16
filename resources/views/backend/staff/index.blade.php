@@ -5,13 +5,13 @@
     <div class="content content-two">
         <div class="d-flex d-block align-items-center justify-content-between flex-wrap gap-3 mb-3">
             <div>
-                <h6>📦 Business List</h6>
+                <h6>📦 Staff List</h6>
             </div>
             <div class="d-flex my-xl-auto right-content align-items-center flex-wrap gap-2">
 
                 <div>
-                    <a href="{{ route('business.create') }}" class="btn btn-primary d-flex align-items-center">
-                        <i class="isax isax-add-circle5 me-1"></i> Add Business
+                    <a href="{{ route('staff.create') }}" class="btn btn-primary d-flex align-items-center">
+                        <i class="isax isax-add-circle5 me-1"></i> Add Staff
                     </a>
                 </div>
             </div>
@@ -23,8 +23,10 @@
                 <thead class="thead-light">
                     <tr>
                         <th class="no-sort">Name</th>
-                        <th class="no-sort">Type</th>
-                        <th class="no-sort">City</th>
+                        <th class="no-sort">Email</th>
+                        <th class="no-sort">Mobile</th>
+                        <th class="no-sort">Job Title</th>
+                        <th class="no-sort">Status</th>
                         <th class="no-sort"></th>
                     </tr>
                 </thead>
@@ -66,15 +68,23 @@
                 "autoWidth": false,
                 "columns": [
                     {
-                        "data": "business_name",
+                        "data": "name",
                         "orderable": false
                     },
                     {
-                        "data": "business_type",
+                        "data": "email",
                         "orderable": false
                     },
                     {
-                        "data": "city",
+                        "data": "mobile",
+                        "orderable": false
+                    },
+                    {
+                        "data": "job_title",
+                        "orderable": false
+                    },
+                    {
+                        "data": "status",
                         "orderable": false
                     },
                     {
@@ -90,7 +100,7 @@
                     $('.dataTables_filter').appendTo('.search-input');
                 },
                 "ajax": {
-                    "url": "{{ route('business.index') }}",
+                    "url": "{{ route('staff.index') }}",
                     "type": "GET"
                 }
             });

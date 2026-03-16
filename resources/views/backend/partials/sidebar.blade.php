@@ -24,34 +24,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('members.create') }}" class="dropdown-item d-flex align-items-center">
-                        <i class="isax isax-user-add me-2"></i>Add New Member
-                    </a>
-                </li>
-                <!-- Add HRM actions -->
-                <li>
-                    <a href="{{ route('members.create') }}" class="dropdown-item d-flex align-items-center">
-                        <i class="isax isax-building-4 me-2"></i>Add New Company
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('members.create') }}" class="dropdown-item d-flex align-items-center">
-                        <i class="isax isax-calendar-tick me-2"></i>Mark Attendance
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('members.create') }}" class="dropdown-item d-flex align-items-center">
-                        <i class="isax isax-calendar-edit me-2"></i>Apply Leave
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('members.create') }}" class="dropdown-item d-flex align-items-center">
-                        <i class="isax isax-money-add me-2"></i>Process Payroll
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('members.create') }}" class="dropdown-item d-flex align-items-center">
-                        <i class="isax isax-category-2 me-2"></i>Add Department
+                    <a href="{{ route('staff.create') }}" class="dropdown-item d-flex align-items-center">
+                        <i class="isax isax-user-add me-2"></i>Add New Staff
                     </a>
                 </li>
             </ul>
@@ -131,8 +105,7 @@
                         </ul>
                     </li>
 
-                    <!-- Companies Management (Super Admin Only) -->
-                   
+                    @if(auth()->user()->hasRole('admin'))
                     <li class="menu-title"><span>Multi-Tenant Management</span></li>
                     <li>
                         <ul>
@@ -148,7 +121,24 @@
                             </li>
                         </ul>
                     </li>
-                   
+                    @endif
+
+                    @if(auth()->user()->hasRole('business_owner'))
+                    <li>
+                        <ul>
+                            <li class="submenu">
+                                <a href="javascript:void(0);" class="">
+                                    <i class="isax isax-user"></i><span>Staff</span>
+                                    <span class="menu-arrow"></span>
+                                </a>
+                                <ul>
+                                    <li><a href="{{ route('staff.index') }}" class="">All Staff</a></li>
+                                    <li><a href="{{ route('staff.create') }}" class="">Add New Staff</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    @endif
 
                     <!-- Members Management (Your Existing Functionality) -->
                     <li class="menu-title"><span>Members Management</span></li>

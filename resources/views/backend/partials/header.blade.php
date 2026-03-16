@@ -93,12 +93,18 @@
                                 <i class="isax isax-profile-circle me-2"></i>Profile Settings
                             </a>
 
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" class="dropdown-item text-danger">
-                                    <i class="isax isax-logout me-2"></i>Logout
-                                </button>
-                            </form>
+                            @impersonating
+                                <a href="{{ route('impersonate.stop') }}" class="dropdown-item text-warning">
+                                    <i class="isax isax-user-minus me-2"></i>Stop Impersonating
+                                </a>
+                            @else
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item text-danger">
+                                        <i class="isax isax-logout me-2"></i>Logout
+                                    </button>
+                                </form>
+                            @endImpersonating
                         </div>
                     </div>
 

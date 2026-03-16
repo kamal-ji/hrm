@@ -7,10 +7,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
+use Lab404\Impersonate\Models\Impersonate;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable, HasRoles, Impersonate;
 
     protected $fillable = [
         'role_id',
@@ -83,6 +84,11 @@ class User extends Authenticatable
     public function business()
     {
         return $this->hasOne(Business::class, 'owner_id');
+    }
+
+    public function staff()
+    {
+        return $this->hasOne(Staff::class, 'user_id');
     }
 
     public function getProfileImageAttribute()
