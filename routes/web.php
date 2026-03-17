@@ -1,12 +1,14 @@
 <?php
 
+use App\Http\Controllers\Backend\AllowanceController;
 use App\Http\Controllers\Backend\BusinessController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\DepartmentController;
+use App\Http\Controllers\Backend\DesignationController;
 use App\Http\Controllers\Backend\EmployeeController;
-use App\Http\Controllers\Backend\MemberController;
+use App\Http\Controllers\Backend\ImpersonationController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\StaffController;
-use App\Http\Controllers\Backend\ImpersonationController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\Web\AuthController;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +43,15 @@ Route::middleware(['auth', 'role:admin|member|employee|staff|business_owner'])->
     Route::get('/company-settings/delete-favicon', [ProfileController::class, 'deleteCompanyFavicon'])->name('delete.companyfavicon');
     Route::get('/profile/email-setting', [ProfileController::class, 'Emailsetting'])->name('profile.email-setting');
 
+    // Employee Routes
+    Route::prefix('employee')->group(function () {
+        Route::get('/', [EmployeeController::class, 'index'])->name('employee.index');
+        Route::get('/create', [EmployeeController::class, 'create'])->name('employee.create');
+        Route::post('/', [EmployeeController::class, 'store'])->name('employee.store');
+        Route::get('/{id}/edit', [EmployeeController::class, 'edit'])->name('employee.edit');
+        Route::put('/{id}', [EmployeeController::class, 'update'])->name('employee.update');
+    });
+
     // Business Routes
     Route::prefix('business')->group(function () {
         Route::get('/', [BusinessController::class, 'index'])->name('business.index');
@@ -59,46 +70,31 @@ Route::middleware(['auth', 'role:admin|member|employee|staff|business_owner'])->
         Route::put('/{id}', [StaffController::class, 'update'])->name('staff.update');
     });
 
-    // Members Routes
-    Route::prefix('members')->group(function () {
-        Route::get('/', [MemberController::class, 'index'])->name('members.index');
-        Route::get('/active', [MemberController::class, 'active'])->name('members.active');
-        Route::get('/inactive', [MemberController::class, 'inactive'])->name('members.inactive');
-        Route::get('/pending', [MemberController::class, 'pending'])->name('members.pending'); // New Registrations
-        Route::get('/create', [MemberController::class, 'create'])->name('members.create');
-        Route::post('/', [MemberController::class, 'store'])->name('members.store');
-        Route::get('/{member}/edit', [MemberController::class, 'edit'])->name('members.edit');
-        Route::put('/{member}', [MemberController::class, 'update'])->name('members.update');
-        Route::delete('/{member}', [MemberController::class, 'destroy'])->name('members.destroy');
-        Route::get('/sponsor-details', [MemberController::class, 'getSponsorDetails'])
-            ->name('members.sponsor.details');
-        // Bulk operations
-        Route::post('/bulk-approve', [MemberController::class, 'bulkApprove'])->name('members.bulk.approve');
-        Route::post('/bulk-delete', [MemberController::class, 'bulkDelete'])->name('members.bulk.delete');
-        Route::put('/{member}/status', [MemberController::class, 'updateStatus'])->name('members.status.update');
-        Route::post('/{member}/approve', [MemberController::class, 'approve'])->name('members.approve');
-        Route::post('/{member}/reject', [MemberController::class, 'reject'])->name('members.reject');
+    Route::prefix('department')->group(function () {
+        Route::get('/', [DepartmentController::class, 'index'])->name('department.index');
+        Route::get('/create', [DepartmentController::class, 'create'])->name('department.create');
+        Route::post('/', [DepartmentController::class, 'store'])->name('department.store');
+        Route::get('/{id}/edit', [DepartmentController::class, 'edit'])->name('department.edit');
+        Route::get('/{id}/delete', [DepartmentController::class, 'destroy'])->name('department.destroy');
+        Route::put('/{id}', [DepartmentController::class, 'update'])->name('department.update');
     });
 
-    // employees Routes
-    Route::prefix('employees')->group(function () {
-        Route::get('/', [EmployeeController::class, 'index'])->name('employees.index');
-        Route::get('/active', [EmployeeController::class, 'active'])->name('employees.active');
-        Route::get('/inactive', [EmployeeController::class, 'inactive'])->name('employees.inactive');
-        Route::get('/pending', [EmployeeController::class, 'pending'])->name('employees.pending'); // New Registrations
-        Route::get('/create', [EmployeeController::class, 'create'])->name('employees.create');
-        Route::post('/', [EmployeeController::class, 'store'])->name('employees.store');
-        Route::get('/{employee}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
-        Route::put('/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
-        Route::delete('/{employee}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
-        Route::get('/sponsor-details', [EmployeeController::class, 'getSponsorDetails'])
-            ->name('employees.sponsor.details');
-        // Bulk operations
-        Route::post('/bulk-approve', [EmployeeController::class, 'bulkApprove'])->name('employees.bulk.approve');
-        Route::post('/bulk-delete', [EmployeeController::class, 'bulkDelete'])->name('employees.bulk.delete');
-        Route::put('/{employee}/status', [EmployeeController::class, 'updateStatus'])->name('employees.status.update');
-        Route::post('/{employee}/approve', [EmployeeController::class, 'approve'])->name('employees.approve');
-        Route::post('/{employee}/reject', [EmployeeController::class, 'reject'])->name('employees.reject');
+    Route::prefix('designation')->group(function () {
+        Route::get('/', [DesignationController::class, 'index'])->name('designation.index');
+        Route::get('/create', [DesignationController::class, 'create'])->name('designation.create');
+        Route::post('/', [DesignationController::class, 'store'])->name('designation.store');
+        Route::get('/{id}/edit', [DesignationController::class, 'edit'])->name('designation.edit');
+        Route::get('/{id}/delete', [DesignationController::class, 'destroy'])->name('designation.destroy');
+        Route::put('/{id}', [DesignationController::class, 'update'])->name('designation.update');
+    });
+
+    Route::prefix('allowance')->group(function () {
+        Route::get('/', [AllowanceController::class, 'index'])->name('allowance.index');
+        Route::get('/create', [AllowanceController::class, 'create'])->name('allowance.create');
+        Route::post('/', [AllowanceController::class, 'store'])->name('allowance.store');
+        Route::get('/{id}/edit', [AllowanceController::class, 'edit'])->name('allowance.edit');
+        Route::get('/{id}/delete', [AllowanceController::class, 'destroy'])->name('allowance.destroy');
+        Route::put('/{id}', [AllowanceController::class, 'update'])->name('allowance.update');
     });
 });
 

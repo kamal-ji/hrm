@@ -184,14 +184,6 @@ class AuthController extends Controller
 
         $user = \App\Models\User::where('email', $request->email)->first();
 
-        // Only admin users
-        if (!$user->role || $user->role->name !== 'admin') {
-            return response()->json([
-                'success' => false,
-                'message' => 'You do not have admin privileges.'
-            ], 403);
-        }
-
         // Generate 6-digit OTP
         $otp = rand(100000, 999999);
 
@@ -211,7 +203,7 @@ class AuthController extends Controller
         // Send OTP email
         Mail::raw("Your OTP is: $otp. It expires in 10 minutes.", function ($message) use ($user) {
             $message->to($user->email)
-                ->subject('Admin Password Reset OTP');
+                ->subject('Password Reset OTP');
         });
 
         return response()->json([

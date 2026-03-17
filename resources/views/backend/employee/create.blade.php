@@ -9,12 +9,13 @@
             <div class="col-md-10 mx-auto">
                 <div>
                     <div class="d-flex align-items-center justify-content-between mb-3">
-                        <h6><a href="{{ route('staff.index') }}"><i class="isax isax-arrow-left me-2"></i>Staff</a></h6>
+                        <h6><a href="{{ route('employee.index') }}"><i class="isax isax-arrow-left me-2"></i>Employee</a>
+                        </h6>
                     </div>
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="mb-3">Add Staff</h5>
-                            <form action="{{ route('staff.store') }}" id="createForm" enctype="multipart/form-data">
+                            <h5 class="mb-3">Add Employee</h5>
+                            <form action="{{ route('employee.store') }}" id="createForm" enctype="multipart/form-data">
 
                                 <h6>Personal Information</h6>
                                 <div class="row gx-3">
@@ -71,7 +72,7 @@
                                     </div>
                                 </div>
 
-                                <h6 class="mt-4">Staff Information</h6>
+                                <h6 class="mt-4">Employee Information</h6>
                                 <div class="row gx-3">
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
@@ -165,7 +166,7 @@
                     success: function(response) {
                         if (response.success) {
                             showSuccess(response.message ||
-                            'Staff created successfully');
+                            'Employee created successfully');
                             window.location.href = response.redirect_url
                         } else {
                             showError(response.message || 'Something went wrong');

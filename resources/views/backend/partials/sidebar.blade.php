@@ -105,8 +105,7 @@
                         </ul>
                     </li>
 
-                    @if(auth()->user()->hasRole('admin'))
-                    <li class="menu-title"><span>Multi-Tenant Management</span></li>
+                    @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('business_owner'))
                     <li>
                         <ul>
                             <li class="submenu">
@@ -117,6 +116,23 @@
                                 <ul>
                                     <li><a href="{{ route('business.index') }}" class="">All Businesses</a></li>
                                     <li><a href="{{ route('business.create') }}" class="">Add New Business</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    @endif
+
+                    @if(auth()->user()->hasRole('admin'))
+                    <li>
+                        <ul>
+                            <li class="submenu">
+                                <a href="javascript:void(0);" class="">
+                                    <i class="isax isax-briefcase"></i><span>Employee</span>
+                                    <span class="menu-arrow"></span>
+                                </a>
+                                <ul>
+                                    <li><a href="{{ route('employee.index') }}" class="">All Employees</a></li>
+                                    <li><a href="{{ route('employee.create') }}" class="">Add New Employee</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -138,6 +154,48 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <ul>
+                            <li class="submenu">
+                                <a href="javascript:void(0);" class="">
+                                    <i class="isax isax-user"></i><span>Departments</span>
+                                    <span class="menu-arrow"></span>
+                                </a>
+                                <ul>
+                                    <li><a href="{{ route('department.index') }}" class="">All Departments</a></li>
+                                    <li><a href="{{ route('department.create') }}" class="">Add New Department</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <ul>
+                            <li class="submenu">
+                                <a href="javascript:void(0);" class="">
+                                    <i class="isax isax-user"></i><span>Designation</span>
+                                    <span class="menu-arrow"></span>
+                                </a>
+                                <ul>
+                                    <li><a href="{{ route('designation.index') }}" class="">All Designation</a></li>
+                                    <li><a href="{{ route('designation.create') }}" class="">Add New Designation</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <ul>
+                            <li class="submenu">
+                                <a href="javascript:void(0);" class="">
+                                    <i class="isax isax-user"></i><span>Allowance</span>
+                                    <span class="menu-arrow"></span>
+                                </a>
+                                <ul>
+                                    <li><a href="{{ route('allowance.index') }}" class="">All Allowance</a></li>
+                                    <li><a href="{{ route('allowance.create') }}" class="">Add New Allowance</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
                     @endif
 
                     <!-- Members Management (Your Existing Functionality) -->
@@ -150,11 +208,11 @@
                                     <span class="menu-arrow"></span>
                                 </a>
                                 <ul>
-                                    <li><a href="{{ route('members.create') }}" class="{{ request()->routeIs('members.create') ? 'active' : '' }}">Add New Member</a></li>
-                                    <li><a href="{{ route('members.index') }}" class="{{ request()->routeIs('members.index') ? 'active' : '' }}">All Members</a></li>
-                                    <li><a href="{{ route('members.active') }}" class="{{ request()->routeIs('members.active') ? 'active' : '' }}">Active Members</a></li>
-                                    <li><a href="{{ route('members.inactive') }}" class="{{ request()->routeIs('members.inactive') ? 'active' : '' }}">Inactive Members</a></li>
-                                    <li><a href="{{ route('members.pending') }}" class="{{ request()->routeIs('members.pending') ? 'active' : '' }}">New Registrations</a></li>
+                                    <li><a href="#" class="">Add New Member</a></li>
+                                    <li><a href="#" class="">All Members</a></li>
+                                    <li><a href="#" class="">Active Members</a></li>
+                                    <li><a href="#" class="">Inactive Members</a></li>
+                                    <li><a href="#" class="">New Registrations</a></li>
                                 </ul>
                             </li>
 
@@ -178,20 +236,6 @@
                     <li class="menu-title"><span>Employee Management</span></li>
                     <li>
                         <ul>
-                            <li class="submenu">
-                                <a href="javascript:void(0);" class="{{ request()->routeIs('employees.*') ? 'active' : '' }}">
-                                    <i class="isax isax-briefcase"></i><span>Employees</span>
-                                    <span class="menu-arrow"></span>
-                                </a>
-                                <ul>
-                                    <li><a href="{{ route('employees.index') }}" class="">All Employees</a></li>
-                                    <li><a href="{{ route('employees.create') }}" class="">Add New Employee</a></li>
-                                    <li><a href="{{ route('employees.active') }}" class="">Active Employees</a></li>
-                                    <li><a href="{{ route('employees.inactive') }}" class="">Inactive Employees</a></li>
-                                    <li><a href="{{ route('members.pending') }}" class="">On Leave</a></li>
-                                </ul>
-                            </li>
-
                             <li class="submenu">
                                 <a href="javascript:void(0);">
                                     <i class="isax isax-category-2"></i><span>Departments</span>

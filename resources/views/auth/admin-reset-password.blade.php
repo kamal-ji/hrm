@@ -90,23 +90,6 @@
                                             </div>
                                         </div>
 
-                                        <div class="mb-3">
-                                            <label class="form-label">Otp Code</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text border-end-0">
-                                                    <i class="isax isax-sms-notification"></i>
-                                                </span>
-                                                <input type="text" value="" id="otp" name="otp"
-                                                    class="form-control border-start-0 ps-0"
-                                                    placeholder="Enter Otp code">
-                                                <div class="invalid-feedback" id="otpError"></div>
-                                            </div>
-                                        </div>
-
-
-
-
-
                                         <div class="mb-1 position-relative">
                                             <button type="submit"
                                                 class="btn bg-primary-gradient text-white w-100 d-flex align-items-center justify-content-center"

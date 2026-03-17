@@ -8,55 +8,47 @@
             <div class="col-md-10 mx-auto">
                 <div>
                     <div class="d-flex align-items-center justify-content-between mb-3">
-                        <h6><a href="{{ route('business.index') }}"><i class="isax isax-arrow-left me-2"></i>Business</a>
+                        <h6><a href="{{ route('staff.index') }}"><i class="isax isax-arrow-left me-2"></i>Staff</a>
                         </h6>
-                    </div>  
+                    </div>
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="mb-3">Update Business</h5>
-                            <form action="{{ route('business.update', $user->id) }}" id="createForm"
-                                enctype="multipart/form-data">
+                            <h5 class="mb-3">Add Staff</h5>
+                            <form action="{{ route('staff.update', $user->id) }}" id="createForm" enctype="multipart/form-data">
 
-                                <h4>Personal Information</h4>
+                                <h6>Personal Information</h6>
                                 <div class="row gx-3">
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">First Name <span
-                                                    class="text-danger ms-1">*</span></label>
-                                            <input type="text" class="form-control" name="first_name"
-                                                value="{{ $user->first_name }}">
+                                            <label class="form-label">First Name <span class="text-danger ms-1">*</span></label>
+                                            <input type="text" class="form-control" name="first_name" value="{{ $user->first_name }}">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Last Name <span
-                                                    class="text-danger ms-1">*</span></label>
-                                            <input type="text" class="form-control" name="last_name"
-                                                value="{{ $user->last_name }}">
+                                            <label class="form-label">Last Name <span class="text-danger ms-1">*</span></label>
+                                            <input type="text" class="form-control" name="last_name" value="{{ $user->last_name }}">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Mobile <span class="text-danger ms-1">*</span></label>
-                                            <input type="text" class="form-control" name="mobile"
-                                                value="{{ $user->mobile }}">
+                                            <input type="text" class="form-control" name="mobile" value="{{ $user->mobile }}">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Email <span class="text-danger ms-1">*</span></label>
-                                            <input type="text" class="form-control" name="email"
-                                                value="{{ $user->email }}">
+                                            <input type="text" class="form-control" name="email" value="{{ $user->email }}">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Password <span
-                                                    class="text-danger ms-1">*</span></label>
+                                            <label class="form-label">Password <span class="text-danger ms-1">*</span></label>
                                             <input type="password" class="form-control" name="password">
                                         </div>
                                     </div>
@@ -64,23 +56,19 @@
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Image <span class="text-danger ms-1">*</span></label>
-                                            <input type="file" class="form-control" name="image">
+                                            <input type="file" class="form-control" name="image" accept="image/*">
+                                            @if($user->image)
+                                                <img src="{{ asset('storage/' . $user->image) }}" alt="User Image" class="img-thumbnail mt-2" style="max-width: 100px;">
+                                            @endif
                                         </div>
-                                        @if ($user->image)
-                                            <img src="{{ asset('storage/' . $user->image) }}" alt="User Image"
-                                                style="width: 100px; height: 100px;">
-                                        @endif
                                     </div>
 
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Status <span class="text-danger ms-1">*</span></label>
                                             <select class="form-control" name="status">
-                                                <option value="active"
-                                                    {{ $user->status == 'active' ? 'selected' : '' }}>Active</option>
-                                                <option value="inactive"
-                                                    {{ $user->status == 'inactive' ? 'selected' : '' }}>Inactive
-                                                </option>
+                                                <option value="active" {{ $user->status == 'active' ? 'selected' : '' }}>Active</option>
+                                                <option value="inactive" {{ $user->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
                                             </select>
                                         </div>
                                     </div>
@@ -88,6 +76,13 @@
 
                                 <h6 class="mt-4">Staff Information</h6>
                                 <div class="row gx-3">
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Employee Identifier <span class="text-danger ms-1">*</span></label>
+                                            <input type="text" class="form-control" name="employee_identifier" value="{{ $staff->employee_identifier }}">
+                                        </div>
+                                    </div>
+
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Employee Identifier <span class="text-danger ms-1">*</span></label>
@@ -124,13 +119,14 @@
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Joining Date <span class="text-danger ms-1">*</span></label>
-                                            <input type="date" class="form-control" name="joining_date" value="{{ $staff->joining_date }}">
+                                            <input type="date" class="form-control" name="joining_date" value="{{ $staff->joining_date->format('Y-m-d') }}">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="d-flex align-items-center justify-content-between pt-4 border-top">
-                                    <button type="submit" class="btn btn-primary submitBtn">Update</button>
+                                    <button type="submit" class="btn btn-primary submitBtn">Submit</button>
+
                                     <div class="spinner-border spinner-border-sm d-none loadingSpinner" role="status">
                                         <span class="visually-hidden">Loading...</span>
                                     </div>
@@ -142,7 +138,6 @@
             </div><!-- end col -->
         </div>
         <!-- end row -->
-
     </div>
     <!-- End Content -->
 @endsection

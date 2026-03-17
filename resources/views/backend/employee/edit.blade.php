@@ -3,46 +3,46 @@
 @section('content')
     <!-- Start Content -->
     <div class="content">
-
         <!-- start row -->
         <div class="row">
             <div class="col-md-10 mx-auto">
                 <div>
                     <div class="d-flex align-items-center justify-content-between mb-3">
-                        <h6><a href="{{ route('staff.index') }}"><i class="isax isax-arrow-left me-2"></i>Staff</a></h6>
+                        <h6><a href="{{ route('employee.index') }}"><i class="isax isax-arrow-left me-2"></i>Employee</a>
+                        </h6>
                     </div>
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="mb-3">Add Staff</h5>
-                            <form action="{{ route('staff.store') }}" id="createForm" enctype="multipart/form-data">
+                            <h5 class="mb-3">Add Employee</h5>
+                            <form action="{{ route('employee.update', $user->id) }}" id="createForm" enctype="multipart/form-data">
 
                                 <h6>Personal Information</h6>
                                 <div class="row gx-3">
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">First Name <span class="text-danger ms-1">*</span></label>
-                                            <input type="text" class="form-control" name="first_name">
+                                            <input type="text" class="form-control" name="first_name" value="{{ $user->first_name }}">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Last Name <span class="text-danger ms-1">*</span></label>
-                                            <input type="text" class="form-control" name="last_name">
+                                            <input type="text" class="form-control" name="last_name" value="{{ $user->last_name }}">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Mobile <span class="text-danger ms-1">*</span></label>
-                                            <input type="text" class="form-control" name="mobile">
+                                            <input type="text" class="form-control" name="mobile" value="{{ $user->mobile }}">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Email <span class="text-danger ms-1">*</span></label>
-                                            <input type="text" class="form-control" name="email">
+                                            <input type="text" class="form-control" name="email" value="{{ $user->email }}">
                                         </div>
                                     </div>
 
@@ -57,6 +57,9 @@
                                         <div class="mb-3">
                                             <label class="form-label">Image <span class="text-danger ms-1">*</span></label>
                                             <input type="file" class="form-control" name="image" accept="image/*">
+                                            @if($user->image)
+                                                <img src="{{ asset('storage/' . $user->image) }}" alt="User Image" class="img-thumbnail mt-2" style="max-width: 100px;">
+                                            @endif
                                         </div>
                                     </div>
 
@@ -64,33 +67,33 @@
                                         <div class="mb-3">
                                             <label class="form-label">Status <span class="text-danger ms-1">*</span></label>
                                             <select class="form-control" name="status">
-                                                <option value="active">Active</option>
-                                                <option value="inactive">Inactive</option>
+                                                <option value="active" {{ $user->status == 'active' ? 'selected' : '' }}>Active</option>
+                                                <option value="inactive" {{ $user->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
 
-                                <h6 class="mt-4">Staff Information</h6>
+                                <h6 class="mt-4">Employee Information</h6>
                                 <div class="row gx-3">
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Employee Identifier <span class="text-danger ms-1">*</span></label>
-                                            <input type="text" class="form-control" name="employee_identifier">
+                                            <input type="text" class="form-control" name="employee_identifier" value="{{ $employee->employee_identifier }}">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Employee Identifier <span class="text-danger ms-1">*</span></label>
-                                            <input type="text" class="form-control" name="employee_identifier">
+                                            <input type="text" class="form-control" name="employee_identifier" value="{{ $employee->employee_identifier }}">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Job Title <span class="text-danger ms-1">*</span></label>
-                                            <input type="text" class="form-control" name="job_title">
+                                            <input type="text" class="form-control" name="job_title" value="{{ $employee->job_title }}">
                                         </div>
                                     </div>
 
@@ -98,10 +101,10 @@
                                         <div class="mb-3">
                                             <label class="form-label">Salary Type <span class="text-danger ms-1">*</span></label>
                                             <select class="form-control" name="salary_type">
-                                                <option value="monthly">Monthly</option>
-                                                <option value="daily">Daily</option>
-                                                <option value="hourly">Hourly</option>
-                                                <option value="per_piece">Per Piece</option>
+                                                <option value="monthly" {{ $employee->salary_type == 'monthly' ? 'selected' : '' }}>Monthly</option>
+                                                <option value="daily" {{ $employee->salary_type == 'daily' ? 'selected' : '' }}>Daily</option>
+                                                <option value="hourly" {{ $employee->salary_type == 'hourly' ? 'selected' : '' }}>Hourly</option>
+                                                <option value="per_piece" {{ $employee->salary_type == 'per_piece' ? 'selected' : '' }}>Per Piece</option>
                                             </select>
                                         </div>
                                     </div>
@@ -109,14 +112,14 @@
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Base Salary <span class="text-danger ms-1">*</span></label>
-                                            <input type="number" class="form-control" name="base_salary">
+                                            <input type="number" class="form-control" name="base_salary" value="{{ $employee->base_salary }}">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Joining Date <span class="text-danger ms-1">*</span></label>
-                                            <input type="date" class="form-control" name="joining_date">
+                                            <input type="date" class="form-control" name="joining_date" value="{{ $employee->joining_date->format('Y-m-d') }}">
                                         </div>
                                     </div>
                                 </div>
@@ -142,6 +145,7 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -155,25 +159,26 @@
                 $('.loadingSpinner').removeClass('d-none');
 
                 const formData = new FormData(this);
+                formData.append('_method', 'PUT');
 
                 $.ajax({
                     url: this.action,
                     method: 'POST',
                     data: formData,
-                    processData: false, // Required for FormData
-                    contentType: false, // Required for FormData
+                    processData: false,
+                    contentType: false,
                     success: function(response) {
                         if (response.success) {
-                            showSuccess(response.message ||
-                            'Staff created successfully');
-                            window.location.href = response.redirect_url
+                            showSuccess(response.message || 'Employee update successfully');
+                            window.location.href = response.redirect_url;
                         } else {
                             showError(response.message || 'Something went wrong');
                         }
                     },
                     error: function(xhr) {
                         $('.form-error').remove();
-
+                        let errorMsg = 'An error occurred';
+                        
                         if (xhr.responseJSON && xhr.responseJSON.errors) {
                             for (let field in xhr.responseJSON.errors) {
                                 if (xhr.responseJSON.errors.hasOwnProperty(field)) {
@@ -190,11 +195,10 @@
                                     fieldElement.after(errorElement);
                                 }
                             }
-
                         } else if (xhr.responseJSON.message) {
-                            showError(xhr.responseJSON.message || 'An error occurred');
+                            errorMsg = xhr.responseJSON.message;
+                            showError(errorMsg);
                         } else {
-                            // If no specific error, show a generic error
                             showError('An error occurred');
                         }
                     },

@@ -15,12 +15,25 @@ class BusinessController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            return DataTables::of(Business::with('user'))
-                ->addColumn('actions', function ($business) {
+            $user = auth()->user();
+
+            return DataTables::of(
+                Business::with('user')
+                    ->when($user->hasRole('business_owner'), function ($query) use ($user) {
+                        $query->where(function ($q) use ($user) {
+                            if ($user->parent_id) {
+                                $q->where('owner_id', $user->id)->orWhereRaw('owner_id IN (SELECT id FROM users WHERE parent_id = ?)', [$user->parent_id]);
+                            } else {
+                                $q->where('owner_id', $user->id)->orWhereRaw('owner_id IN (SELECT id FROM users WHERE parent_id = ?)', [$user->id]);
+                            }
+                        });
+                    })
+            )
+                ->addColumn('actions', function ($business) use ($user) {
                     $buttons = '<a href="' . route('business.edit', $business->owner_id) . '" class="btn btn-sm btn-primary">Edit</a>';
 
-                    if (auth()->user()->hasRole('admin')) {
-                        $buttons .= '<a href="' . route('impersonate.start', $business->owner_id) . '" class="btn btn-sm btn-warning">Impersonate</a>';
+                    if ($user->hasRole('admin') || $user->hasRole('business_owner') || $user->id != $business->owner_id) {
+                        $buttons .= '&nbsp; <a href="' . route('impersonate.start', $business->owner_id) . '" class="btn btn-sm btn-secondary">Impersonate</a>';
                     }
 
                     return $buttons;
@@ -46,6 +59,8 @@ class BusinessController extends Controller
 
     public function store(Request $request)
     {
+        $authUser = auth()->user();
+
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -79,6 +94,9 @@ class BusinessController extends Controller
             'password' => Hash::make($request->password),
             'image' => $image,
             'status' => $request->status,
+            'registration_type' => $authUser->hasRole('admin') ? 'admin' : 'self',
+            'created_by_admin' => $authUser->hasRole('admin') ? 1 : 0,
+            'parent_id' => $authUser->hasRole('admin') ? null : $authUser->getParentId(),
         ]);
 
         $businessData = $request->only([
@@ -121,14 +139,6 @@ class BusinessController extends Controller
             'current_employees',
 
             'upgrade_plan_option',
-
-            'allow_upi',
-            'allow_card',
-            'allow_netbanking',
-            'allow_wallet',
-            'allow_razorpay',
-            'allow_cashfree',
-            'allow_phonepe_pg'
         ]);
 
         $businessData['owner_id'] = $user->id;
@@ -230,14 +240,6 @@ class BusinessController extends Controller
             'current_employees',
 
             'upgrade_plan_option',
-
-            'allow_upi',
-            'allow_card',
-            'allow_netbanking',
-            'allow_wallet',
-            'allow_razorpay',
-            'allow_cashfree',
-            'allow_phonepe_pg'
         ]);
 
         $user->business->update($businessData);

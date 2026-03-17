@@ -51,28 +51,12 @@ class Business extends Model
         'current_employees',
 
         'upgrade_plan_option',
-
-        'allow_upi',
-        'allow_card',
-        'allow_netbanking',
-        'allow_wallet',
-        'allow_razorpay',
-        'allow_cashfree',
-        'allow_phonepe_pg'
     ];
 
     protected $casts = [
         'sms_notifications' => 'boolean',
         'whatsapp_alerts' => 'boolean',
         'email_alerts' => 'boolean',
-
-        'allow_upi' => 'boolean',
-        'allow_card' => 'boolean',
-        'allow_netbanking' => 'boolean',
-        'allow_wallet' => 'boolean',
-        'allow_razorpay' => 'boolean',
-        'allow_cashfree' => 'boolean',
-        'allow_phonepe_pg' => 'boolean',
 
         'upgrade_plan_option' => 'boolean'
     ];

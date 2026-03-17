@@ -39,6 +39,7 @@ class User extends Authenticatable
         'approved_at',
         'created_by_admin',
         'referral_code',
+        'parent_id',
 
     ];
 
@@ -56,19 +57,9 @@ class User extends Authenticatable
         ];
     }
 
-    public function scopeActive($query)
+    public function scopeStatus($query, $status = 'active')
     {
-        return $query->where('status', 'active');
-    }
-
-    public function scopeInactive($query)
-    {
-        return $query->where('status', 'inactive');
-    }
-
-    public function scopePending($query)
-    {
-        return $query->where('status', 'pending');
+        return $query->where('status', $status);
     }
 
     public function country()
@@ -91,6 +82,11 @@ class User extends Authenticatable
         return $this->hasOne(Staff::class, 'user_id');
     }
 
+    public function employee()
+    {
+        return $this->hasOne(Employee::class, 'user_id');
+    }
+
     public function getProfileImageAttribute()
     {
         return $this->image
@@ -98,24 +94,9 @@ class User extends Authenticatable
             : asset('assets/backend/img/profiles/avatar-01.jpg');
     }
 
-    public function scopeActiveSponsors($query)
-    {
-        return $query->role('member')
-            ->where('status', 'active')
-            ->whereNotNull('approved_at');
-    }
-
     public function getFullNameAttribute()
     {
         return $this->first_name . ' ' . $this->last_name;
-    }
-
-    public function getSponsorInfoAttribute()
-    {
-        if ($this->sponsor) {
-            return $this->sponsor->full_name . ' (' . $this->sponsor->member_id . ')';
-        }
-        return 'No Sponsor';
     }
 
     public static function generateMemberId()
@@ -145,5 +126,17 @@ class User extends Authenticatable
 
         $nextNumber = $lastEmployee ? intval(substr($lastEmployee->employee_id, 3)) + 1 : 1;
         return $prefix . str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
+    }
+
+    public function getParentId(){
+        return $this->parent_id ?? $this->id;
+    }
+
+    public function getParentBusiness(){
+        if($this->business){
+            return $this->business;
+        } else {
+            return static::find($this->getParentId())->business;
+        }
     }
 }

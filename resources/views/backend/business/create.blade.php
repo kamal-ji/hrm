@@ -149,6 +149,13 @@
 
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
+                                            <label class="form-label">City</label>
+                                            <input type="text" class="form-control" name="city">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
                                             <label class="form-label">State</label>
                                             <input type="text" class="form-control" name="state">
                                         </div>
@@ -191,8 +198,7 @@
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Business Registration Number</label>
-                                            <input type="text" class="form-control"
-                                                name="business_registration_number">
+                                            <input type="text" class="form-control" name="business_registration_number">
                                         </div>
                                     </div>
 
@@ -222,7 +228,15 @@
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Payment Method</label>
-                                            <input type="text" class="form-control" name="payment_method">
+                                            <select class="form-control" name="payment_method">
+                                                <option value="upi">UPI</option>
+                                                <option value="card">Card</option>
+                                                <option value="netbanking">Net Banking</option>
+                                                <option value="wallet">Wallet</option>
+                                                <option value="razorpay">Razorpay</option>
+                                                <option value="cashfree">Cashfree</option>
+                                                <option value="phonepe_pg">PhonePe PG</option>
+                                            </select>
                                         </div>
                                     </div>
 
@@ -258,15 +272,68 @@
 
                                     <div class="col-lg-4 col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Working Days Per Month</label>
-                                            <input type="number" class="form-control" name="working_days_per_month">
+                                            <label class="form-label">Default Shift Time</label>
+                                            <input type="text" class="form-control" name="default_shift_time">
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Default Shift Time</label>
-                                            <input type="text" class="form-control" name="default_shift_time">
+                                    <div class="col-md-12">
+                                        <h5 class="fw-bold">Payable Days & Work Hours</h5>
+
+                                        <p class="text-muted mb-4">
+                                            What is the effective payable days per month, work hours per day in your organization?<br>
+                                            We will calculate based on your selection salary / payable days, hourly wage rate = daily wage rate / number of work hours for salary calculation
+                                        </p>
+
+                                        <!-- Options -->
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="radio" name="working_days_per_month" value="cal-month" id="calendarMonth" checked>
+                                            <label class="form-check-label fw-semibold" for="calendarMonth">
+                                                Calendar Month
+                                            </label>
+                                            <div class="option-desc">
+                                                Ex: March will have 31 payable days, April will have 30 payable days etc.
+                                            </div>
+                                        </div>
+
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="radio" name="working_days_per_month" value="30" id="month30">
+                                            <label class="form-check-label fw-semibold" for="month30">
+                                                Every Month 30 Days
+                                            </label>
+                                            <div class="option-desc">
+                                                Ex: March will have 30 payable days, April will have 30 payable days etc.
+                                            </div>
+                                        </div>
+
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="radio" name="working_days_per_month" value="28" id="month28">
+                                            <label class="form-check-label fw-semibold" for="month28">
+                                                Every Month 28 Days
+                                            </label>
+                                            <div class="option-desc">
+                                                Ex: March will have 28 payable days, April will have 28 payable days etc.
+                                            </div>
+                                        </div>
+
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="radio" name="working_days_per_month" value="26" id="month26">
+                                            <label class="form-check-label fw-semibold" for="month26">
+                                                Every Month 26 Days
+                                            </label>
+                                            <div class="option-desc">
+                                                Ex: March will have 26 payable days, April will have 26 payable days etc.
+                                            </div>
+                                        </div>
+
+                                        <div class="form-check mb-4">
+                                            <input class="form-check-input" type="radio" name="working_days_per_month" value="exclude-weekly" id="excludeWeekly">
+                                            <label class="form-check-label fw-semibold" for="excludeWeekly">
+                                                Exclude Weekly Offs
+                                            </label>
+                                            <div class="option-desc">
+                                                Ex: Month with 31 days and 4 weekly offs will have 27 payable days.
+                                            </div>
                                         </div>
                                     </div>
 
@@ -275,7 +342,6 @@
                                 <h6 class="mt-4">Notifications</h6>
 
                                 <div class="row gx-3">
-
                                     <div class="col-md-3">
                                         <label><input type="checkbox" name="sms_notifications" value="1" checked>
                                             SMS</label>
@@ -290,28 +356,6 @@
                                         <label><input type="checkbox" name="email_alerts" value="1" checked>
                                             Email</label>
                                     </div>
-
-                                </div>
-
-                                <h6 class="mt-4">Payment Gateways</h6>
-
-                                <div class="row gx-3">
-
-                                    <div class="col-md-3"><label><input type="checkbox" name="allow_upi" value="1">
-                                            UPI</label></div>
-                                    <div class="col-md-3"><label><input type="checkbox" name="allow_card"
-                                                value="1"> Card</label></div>
-                                    <div class="col-md-3"><label><input type="checkbox" name="allow_netbanking"
-                                                value="1"> Net Banking</label></div>
-                                    <div class="col-md-3"><label><input type="checkbox" name="allow_wallet"
-                                                value="1"> Wallet</label></div>
-                                    <div class="col-md-3"><label><input type="checkbox" name="allow_razorpay"
-                                                value="1"> Razorpay</label></div>
-                                    <div class="col-md-3"><label><input type="checkbox" name="allow_cashfree"
-                                                value="1"> Cashfree</label></div>
-                                    <div class="col-md-3"><label><input type="checkbox" name="allow_phonepe_pg"
-                                                value="1"> PhonePe PG</label></div>
-
                                 </div>
 
                                 <div class="d-flex align-items-center justify-content-between pt-4 border-top">

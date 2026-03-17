@@ -15,11 +15,23 @@ class StaffController extends Controller
     public function index(Request $request) {
         if($request->ajax()){
             return DataTables::of(Staff::with('user'))
+                ->addColumn('full_name', function($staff){
+                    return $staff->user->first_name . ' ' . $staff->user->last_name;
+                })
+                ->addColumn('email', function($staff){
+                    return $staff->user->email;
+                })
+                ->addColumn('mobile', function($staff){
+                    return $staff->user->mobile;
+                })
+                ->addColumn('status', function($staff){
+                    return $staff->user->status;
+                })
                 ->addColumn('actions', function($staff) {
                     $buttons = '<a href="'.route('staff.edit', $staff->user_id).'" class="btn btn-sm btn-primary">Edit</a>';
                     
                     if(auth()->user()->hasRole('admin')){
-                        $buttons .= '<a href="'.route('impersonate.start', $staff->user_id).'" class="btn btn-sm btn-warning">Impersonate</a>';
+                        $buttons .= '&nbsp; <a href="'.route('impersonate.start', $staff->user_id).'" class="btn btn-sm btn-secondary">Impersonate</a>';
                     }
                     
                     return $buttons;
@@ -42,6 +54,8 @@ class StaffController extends Controller
     }
 
     public function store(Request $request) {
+        $authUser = auth()->user();
+
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -79,10 +93,13 @@ class StaffController extends Controller
             'password' => Hash::make($request->password),
             'image' => $image,
             'status' => $request->status,
+            'registration_type' => $authUser->hasRole('admin') ? 'admin' : 'self',
+            'created_by_admin' => $authUser->hasRole('admin') ? 1 : 0,
+            'parent_id' => $authUser->getParentId(),
         ]);
 
         Staff::create([
-            'business_id' => auth()->user()->business_id,
+            'business_id' => $user->parent_id,
             'user_id' => $user->id,
             'employee_identifier' => $request->employee_identifier,
             'job_title' => $request->job_title,
@@ -114,8 +131,8 @@ class StaffController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'mobile' => 'required|string|max:255',
-            'email' => 'required|string|max:255|unique:users,email',
-            'password' => 'required|string|max:255',
+            'email' => 'required|string|max:255|unique:users,email,' . $id . ',id',
+            'password' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required|in:active,inactive',
 

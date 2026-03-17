@@ -7,7 +7,7 @@
 # 
 # Host: 127.0.0.1 (mariadb.org binary distribution 11.8.6)
 # Database: db
-# Generation time: 2026-03-16T14:48:34+05:30
+# Generation time: 2026-03-17T15:08:28+05:30
 # ************************************************************
 
 
@@ -18,6 +18,34 @@ SET NAMES utf8mb4;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+# Dump of table allowances
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `allowances`;
+
+CREATE TABLE `allowances` (
+  `id` bigint(12) NOT NULL AUTO_INCREMENT,
+  `business_id` bigint(12) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `is_active` (`is_active`),
+  KEY `business_id` (`business_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+LOCK TABLES `allowances` WRITE;
+/*!40000 ALTER TABLE `allowances` DISABLE KEYS */;
+
+INSERT INTO `allowances` (`id`, `business_id`, `name`, `is_active`, `created_at`, `updated_at`) VALUES
+	(1, 5, "test", 1, "2026-03-17 09:36:42", "2026-03-17 09:36:42");
+
+/*!40000 ALTER TABLE `allowances` ENABLE KEYS */;
+UNLOCK TABLES;
+
 
 
 # Dump of table businesses
@@ -50,7 +78,7 @@ CREATE TABLE `businesses` (
   `invoice_email` varchar(255) DEFAULT NULL,
   `salary_cycle` enum('monthly','weekly') DEFAULT 'monthly',
   `salary_payment_date` tinyint(3) unsigned DEFAULT NULL,
-  `working_days_per_month` tinyint(3) unsigned DEFAULT NULL,
+  `working_days_per_month` varchar(255) DEFAULT NULL,
   `default_shift_time` varchar(50) DEFAULT NULL,
   `sms_notifications` tinyint(1) DEFAULT 1,
   `whatsapp_alerts` tinyint(1) DEFAULT 1,
@@ -58,13 +86,6 @@ CREATE TABLE `businesses` (
   `max_employees_allowed` int(10) unsigned DEFAULT 0,
   `current_employees` int(10) unsigned DEFAULT 0,
   `upgrade_plan_option` tinyint(1) DEFAULT 1,
-  `allow_upi` tinyint(1) DEFAULT 1,
-  `allow_card` tinyint(1) DEFAULT 1,
-  `allow_netbanking` tinyint(1) DEFAULT 1,
-  `allow_wallet` tinyint(1) DEFAULT 1,
-  `allow_razorpay` tinyint(1) DEFAULT 1,
-  `allow_cashfree` tinyint(1) DEFAULT 1,
-  `allow_phonepe_pg` tinyint(1) DEFAULT 1,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
@@ -72,13 +93,14 @@ CREATE TABLE `businesses` (
   KEY `business_name` (`business_name`),
   KEY `city` (`city`),
   KEY `subscription_plan` (`subscription_plan`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 LOCK TABLES `businesses` WRITE;
 /*!40000 ALTER TABLE `businesses` DISABLE KEYS */;
 
-INSERT INTO `businesses` (`id`, `owner_id`, `business_name`, `business_type`, `industry_type`, `business_category`, `number_of_employees`, `alternate_mobile`, `designation`, `address_line_1`, `address_line_2`, `city`, `state`, `pincode`, `country`, `gst_number`, `pan_number`, `business_registration_number`, `subscription_plan`, `billing_cycle`, `payment_method`, `invoice_email`, `salary_cycle`, `salary_payment_date`, `working_days_per_month`, `default_shift_time`, `sms_notifications`, `whatsapp_alerts`, `email_alerts`, `max_employees_allowed`, `current_employees`, `upgrade_plan_option`, `allow_upi`, `allow_card`, `allow_netbanking`, `allow_wallet`, `allow_razorpay`, `allow_cashfree`, `allow_phonepe_pg`, `created_at`, `updated_at`) VALUES
-	(1, 13, "sdasdf", "asdfads", "sadfasdf", "asdfasdf", 34, "23432432", "sadfasdf", "sdsadfas", "asdfasd", "dd", "fasdfasfasd", "sdfasd", "India", "asdfasdf", "asdfas", "fasdf", "asdfsad", "monthly", "sdfasdf", "asdf@adf.com", "monthly", 30, 40, "05:00", 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, "2026-03-16 09:14:29", "2026-03-16 14:47:25");
+INSERT INTO `businesses` (`id`, `owner_id`, `business_name`, `business_type`, `industry_type`, `business_category`, `number_of_employees`, `alternate_mobile`, `designation`, `address_line_1`, `address_line_2`, `city`, `state`, `pincode`, `country`, `gst_number`, `pan_number`, `business_registration_number`, `subscription_plan`, `billing_cycle`, `payment_method`, `invoice_email`, `salary_cycle`, `salary_payment_date`, `working_days_per_month`, `default_shift_time`, `sms_notifications`, `whatsapp_alerts`, `email_alerts`, `max_employees_allowed`, `current_employees`, `upgrade_plan_option`, `created_at`, `updated_at`) VALUES
+	(5, 8, "sdfasd", "asdfa", "sdfa", "asd", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "India", NULL, NULL, NULL, NULL, "monthly", "upi", NULL, "monthly", NULL, "cal-month", NULL, 1, 1, 1, 0, 0, 1, "2026-03-17 06:41:46", "2026-03-17 06:41:46"),
+	(6, 9, "sdfasd", "dsfad", "adsfas", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "India", NULL, NULL, NULL, NULL, "monthly", "upi", NULL, "monthly", NULL, "cal-month", NULL, 1, 1, 1, 0, 0, 1, "2026-03-17 06:42:17", "2026-03-17 06:42:17");
 
 /*!40000 ALTER TABLE `businesses` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -101,7 +123,7 @@ LOCK TABLES `cache` WRITE;
 /*!40000 ALTER TABLE `cache` DISABLE KEYS */;
 
 INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
-	("laravel-cache-companySettings", "a:29:{s:12:\"api_base_url\";s:33:\"https://rajasthandscservices.com/\";s:4:\"name\";s:12:\"Rajasthandsc\";s:5:\"appid\";s:12:\"Rajasthandsc\";s:9:\"image_url\";s:33:\"https://rajasthandscservices.com/\";s:8:\"logo_url\";s:52:\"https://rajasthandscservices.com/uploads/header_logo\";s:20:\"firebase_auth_domain\";s:27:\"tiara-adb0a.firebaseapp.com\";s:14:\"firbase_apiKey\";s:39:\"AIzaSyCCpefxXHckoxYQfEFEI0qpVokZ5HCRGMI\";s:9:\"copyright\";s:17:\"Rajasthandsc@2025\";s:8:\"x-apikey\";s:88:\"x/QjD7YtffAyWBb2ie/kgXpHobQNpP8e4Ts01nk/FHrDZioRMCS1AgHRorLUI/1uaguAqfsC3Ax9Eq7KKvhyAA==\";s:4:\"uuid\";s:36:\"0bb9497b-2681-49df-95d7-fbe44c983876\";s:8:\"db_state\";s:6:\"online\";s:7:\"emailid\";s:13:\"kamal@abc.com\";s:8:\"username\";s:6:\"bhudev\";s:8:\"password\";s:6:\"123456\";s:19:\"firebase_project_id\";s:11:\"tiara-adb0a\";s:23:\"firebase_storage_bucket\";s:31:\"tiara-adb0a.firebasestorage.app\";s:28:\"firebase_messaging_sender_id\";s:12:\"424284680643\";s:15:\"firebase_app_id\";s:41:\"1:424284680643:web:8e3b6bc8067073cf0b8d76\";s:23:\"firebase_measurement_id\";s:12:\"G-B0FQY3FCD1\";s:12:\"company_city\";s:7:\"vadodra\";s:15:\"company_favicon\";s:61:\"company/favicons/V186uY0XSv86U3gIU6vCNbEZydisDrKIGLVtaFX4.png\";s:12:\"company_name\";s:6:\"Bhudev\";s:13:\"company_email\";s:16:\"bhudev@gmail.com\";s:15:\"company_address\";s:5:\"janta\";s:15:\"company_website\";s:33:\"https://rajasthandscservices.com/\";s:12:\"company_logo\";s:58:\"company/logos/g1T7P6IvdyNXh77OESrRN5Op6pWPQstHWrbHm33E.png\";s:13:\"company_phone\";s:10:\"8952939854\";s:13:\"company_state\";s:6:\"gujrat\";s:15:\"company_country\";s:0:\"\";}", 2089012709);
+	("laravel-cache-companySettings", "a:29:{s:12:\"api_base_url\";s:33:\"https://rajasthandscservices.com/\";s:4:\"name\";s:12:\"Rajasthandsc\";s:5:\"appid\";s:12:\"Rajasthandsc\";s:9:\"image_url\";s:33:\"https://rajasthandscservices.com/\";s:8:\"logo_url\";s:52:\"https://rajasthandscservices.com/uploads/header_logo\";s:20:\"firebase_auth_domain\";s:27:\"tiara-adb0a.firebaseapp.com\";s:14:\"firbase_apiKey\";s:39:\"AIzaSyCCpefxXHckoxYQfEFEI0qpVokZ5HCRGMI\";s:9:\"copyright\";s:17:\"Rajasthandsc@2025\";s:8:\"x-apikey\";s:88:\"x/QjD7YtffAyWBb2ie/kgXpHobQNpP8e4Ts01nk/FHrDZioRMCS1AgHRorLUI/1uaguAqfsC3Ax9Eq7KKvhyAA==\";s:4:\"uuid\";s:36:\"0bb9497b-2681-49df-95d7-fbe44c983876\";s:8:\"db_state\";s:6:\"online\";s:7:\"emailid\";s:13:\"kamal@abc.com\";s:8:\"username\";s:6:\"bhudev\";s:8:\"password\";s:6:\"123456\";s:19:\"firebase_project_id\";s:11:\"tiara-adb0a\";s:23:\"firebase_storage_bucket\";s:31:\"tiara-adb0a.firebasestorage.app\";s:28:\"firebase_messaging_sender_id\";s:12:\"424284680643\";s:15:\"firebase_app_id\";s:41:\"1:424284680643:web:8e3b6bc8067073cf0b8d76\";s:23:\"firebase_measurement_id\";s:12:\"G-B0FQY3FCD1\";s:12:\"company_city\";s:7:\"vadodra\";s:15:\"company_favicon\";s:61:\"company/favicons/V186uY0XSv86U3gIU6vCNbEZydisDrKIGLVtaFX4.png\";s:12:\"company_name\";s:6:\"Bhudev\";s:13:\"company_email\";s:16:\"bhudev@gmail.com\";s:15:\"company_address\";s:5:\"janta\";s:15:\"company_website\";s:33:\"https://rajasthandscservices.com/\";s:12:\"company_logo\";s:58:\"company/logos/g1T7P6IvdyNXh77OESrRN5Op6pWPQstHWrbHm33E.png\";s:13:\"company_phone\";s:10:\"8952939854\";s:13:\"company_state\";s:6:\"gujrat\";s:15:\"company_country\";s:0:\"\";}", 2089100304);
 
 /*!40000 ALTER TABLE `cache` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -400,6 +422,65 @@ UNLOCK TABLES;
 
 
 
+# Dump of table departments
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `departments`;
+
+CREATE TABLE `departments` (
+  `id` bigint(12) NOT NULL AUTO_INCREMENT,
+  `business_id` bigint(12) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `is_active` (`is_active`),
+  KEY `business_id` (`business_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+LOCK TABLES `departments` WRITE;
+/*!40000 ALTER TABLE `departments` DISABLE KEYS */;
+
+INSERT INTO `departments` (`id`, `business_id`, `name`, `is_active`, `created_at`, `updated_at`) VALUES
+	(1, 5, "IT", 1, "2026-03-17 09:11:37", "2026-03-17 09:17:23"),
+	(2, 5, "IT", 1, "2026-03-17 09:12:42", "2026-03-17 09:12:42");
+
+/*!40000 ALTER TABLE `departments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+
+# Dump of table designations
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `designations`;
+
+CREATE TABLE `designations` (
+  `id` bigint(12) NOT NULL AUTO_INCREMENT,
+  `business_id` bigint(12) NOT NULL,
+  `department_id` bigint(12) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `is_active` (`is_active`),
+  KEY `department_id` (`department_id`),
+  KEY `business_id` (`business_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+LOCK TABLES `designations` WRITE;
+/*!40000 ALTER TABLE `designations` DISABLE KEYS */;
+
+INSERT INTO `designations` (`id`, `business_id`, `department_id`, `name`, `is_active`, `created_at`, `updated_at`) VALUES
+	(1, 5, 1, "asdfads", 1, "2026-03-17 09:19:28", "2026-03-17 09:19:28");
+
+/*!40000 ALTER TABLE `designations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+
 # Dump of table email_settings
 # ------------------------------------------------------------
 
@@ -420,6 +501,37 @@ CREATE TABLE `email_settings` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
+
+
+
+# Dump of table employees
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `employees`;
+
+CREATE TABLE `employees` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL COMMENT 'Links to the actual person logging in',
+  `employee_identifier` varchar(50) DEFAULT NULL,
+  `job_title` varchar(100) DEFAULT NULL,
+  `salary_type` enum('monthly','daily','hourly','per_piece') NOT NULL DEFAULT 'monthly',
+  `base_salary` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `joining_date` date DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_staff_business` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+LOCK TABLES `employees` WRITE;
+/*!40000 ALTER TABLE `employees` DISABLE KEYS */;
+
+INSERT INTO `employees` (`id`, `user_id`, `employee_identifier`, `job_title`, `salary_type`, `base_salary`, `joining_date`, `created_at`, `updated_at`) VALUES
+	(1, 11, "asdfad", "asdfasd", "monthly", 3330, "0045-03-12", "2026-03-17 07:06:26", "2026-03-17 07:06:26"),
+	(2, 12, "asdfad", "asdfasd", "monthly", 3330, "0045-03-12", "2026-03-17 07:09:17", "2026-03-17 07:09:17");
+
+/*!40000 ALTER TABLE `employees` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 
@@ -554,13 +666,24 @@ LOCK TABLES `model_has_roles` WRITE;
 
 INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 	(1, "App\\Models\\User", 1),
+	(2, "App\\Models\\User", 1),
 	(3, "App\\Models\\User", 2),
+	(5, "App\\Models\\User", 2),
 	(3, "App\\Models\\User", 3),
+	(5, "App\\Models\\User", 3),
 	(3, "App\\Models\\User", 4),
+	(5, "App\\Models\\User", 4),
 	(3, "App\\Models\\User", 5),
+	(5, "App\\Models\\User", 5),
 	(3, "App\\Models\\User", 6),
+	(5, "App\\Models\\User", 6),
 	(3, "App\\Models\\User", 7),
+	(5, "App\\Models\\User", 7),
 	(4, "App\\Models\\User", 8),
+	(5, "App\\Models\\User", 8),
+	(5, "App\\Models\\User", 9),
+	(4, "App\\Models\\User", 10),
+	(2, "App\\Models\\User", 12),
 	(5, "App\\Models\\User", 12),
 	(5, "App\\Models\\User", 13);
 
@@ -580,32 +703,6 @@ CREATE TABLE `password_reset_tokens` (
   `created_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`email`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
-
-
-
-# Dump of table payments
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `payments`;
-
-CREATE TABLE `payments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `payment_id` varchar(255) DEFAULT NULL,
-  `order_id` int(11) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `amount` decimal(10,2) DEFAULT NULL,
-  `currency` varchar(255) NOT NULL DEFAULT 'INR',
-  `payment_method` varchar(255) DEFAULT 'cash',
-  `payment_details` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`payment_details`)),
-  `status` varchar(255) NOT NULL DEFAULT 'pending',
-  `notes` varchar(255) DEFAULT NULL,
-  `paid_at` timestamp NULL DEFAULT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 
@@ -636,6 +733,30 @@ INSERT INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at
 
 /*!40000 ALTER TABLE `permissions` ENABLE KEYS */;
 UNLOCK TABLES;
+
+
+
+# Dump of table plans
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `plans`;
+
+CREATE TABLE `plans` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `slug` varchar(100) NOT NULL,
+  `price_monthly` decimal(10,2) NOT NULL,
+  `price_yearly` decimal(10,2) DEFAULT NULL,
+  `max_employees` int(11) DEFAULT 10,
+  `max_child_businesses` int(11) DEFAULT 0,
+  `features` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`features`)),
+  `is_active` tinyint(1) DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `slug` (`slug`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
 
 
 
@@ -686,7 +807,7 @@ LOCK TABLES `roles` WRITE;
 
 INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
 	(1, "admin", "web", "2025-12-31 10:40:05", "2025-12-31 10:40:05"),
-	(2, "user", "web", "2025-12-31 10:40:05", "2025-12-31 10:40:05"),
+	(2, "employee", "web", "2025-12-31 10:40:05", "2025-12-31 10:40:05"),
 	(3, "member", "web", "2025-12-31 10:40:05", "2025-12-31 10:40:05"),
 	(4, "staff", "web", "2025-12-31 10:40:05", "2025-12-31 10:40:05"),
 	(5, "business_owner", "web", "2025-12-31 10:40:05", "2025-12-31 10:40:05");
@@ -717,7 +838,8 @@ LOCK TABLES `sessions` WRITE;
 /*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-	("VyuHmz0nkrFAhytJWVqbNwlh5eoMEOSLETZahFow", 13, "172.18.0.4", "Mozilla/5.0 (X11; Linux x86_64; rv:148.0) Gecko/20100101 Firefox/148.0", "YToxMDp7czo2OiJfdG9rZW4iO3M6NDA6ImRJRTRjWHhKRThvajdrcGRKNklHbzFSdFNCWldidjk2ZHpBOHU1ZEkiO3M6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6OToiX3ByZXZpb3VzIjthOjI6e3M6MzoidXJsIjtzOjQwOiJodHRwczovL2hybS5kZGV2LnNpdGUvYWRtaW4vc3RhZmYvY3JlYXRlIjtzOjU6InJvdXRlIjtzOjEyOiJzdGFmZi5jcmVhdGUiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO3M6MTI6ImRldmljZV90b2tlbiI7czoxNDI6ImZDZUducHl4SzYwZHZrUFFEMUxfUVI6QVBBOTFiSHg3REZoWEhXd1hMakdURVdOTXEwWEt2eWtNNjJ1OW9UT0VFMjctZF9HUWE4TkN5ZEwtOWdvTGxTb3RDQlYyUWctVEMxb01rUWl2UkhGc3VhemJodGJ1bWN1d0NpTV9CN1RvTEFTWWxlRUs0anprUDgiO3M6MzoidXJsIjthOjE6e3M6ODoiaW50ZW5kZWQiO3M6MzE6Imh0dHBzOi8vaHJtLmRkZXYuc2l0ZS9kYXNoYm9hcmQiO31zOjE1OiJpbXBlcnNvbmF0ZWRfYnkiO2k6MTtzOjE4OiJpbXBlcnNvbmF0b3JfZ3VhcmQiO3M6Mzoid2ViIjtzOjI0OiJpbXBlcnNvbmF0b3JfZ3VhcmRfdXNpbmciO047czo1MDoibG9naW5fd2ViXzNkYzdhOTEzZWY1ZmQ0Yjg5MGVjYWJlMzQ4NzA4NTU3M2UxNmNmODIiO2k6MTM7fQ==", 1773652700);
+	("7Rk2H8dWjaqkNHVLSUZFHyOolVcr9Iw36fHBniHK", NULL, "172.18.0.5", "Mozilla/5.0 (X11; Linux x86_64; rv:148.0) Gecko/20100101 Firefox/148.0", "YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHE2VFdaZHE4V2psanpzbEl5Ums3QU5kOURHYkdpeXdZbW8wSlZidSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czo0NToiaHR0cHM6Ly9ocm0uZGRldi5zaXRlL2FkbWluL2RlcGFydG1lbnQvY3JlYXRlIjt9czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6NDU6Imh0dHBzOi8vaHJtLmRkZXYuc2l0ZS9hZG1pbi9kZXBhcnRtZW50L2NyZWF0ZSI7czo1OiJyb3V0ZSI7czoxNzoiZGVwYXJ0bWVudC5jcmVhdGUiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19", 1773738587),
+	("7SMPgrNg3VzyGAmL159TvaCvnYay2L3piab1xdCh", 8, "172.18.0.5", "Mozilla/5.0 (X11; Linux x86_64; rv:148.0) Gecko/20100101 Firefox/148.0", "YToxMzp7czo2OiJfdG9rZW4iO3M6NDA6Ik9nV1FaUFVqSWU1VlZ6WlB6eGFOc0c3VjBGUWJhMDJTTFNUTnEzVXkiO3M6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6OToiX3ByZXZpb3VzIjthOjI6e3M6MzoidXJsIjtzOjM3OiJodHRwczovL2hybS5kZGV2LnNpdGUvYWRtaW4vYWxsb3dhbmNlIjtzOjU6InJvdXRlIjtzOjE1OiJhbGxvd2FuY2UuaW5kZXgiO31zOjk6InJlcXVlc3RlZCI7YjoxO3M6OToib3RwX2VtYWlsIjtzOjIwOiJrYW1hbGppMDEwQGdtYWlsLmNvbSI7czo5OiJzZW50X3RpbWUiO086MjU6IklsbHVtaW5hdGVcU3VwcG9ydFxDYXJib24iOjQ6e3M6NDoiZGF0ZSI7czoyNjoiMjAyNi0wMy0xNyAwNDozNjo1NS41ODU1NjgiO3M6MTM6InRpbWV6b25lX3R5cGUiO2k6MztzOjg6InRpbWV6b25lIjtzOjM6IlVUQyI7czoxODoiZHVtcERhdGVQcm9wZXJ0aWVzIjthOjI6e3M6NDoiZGF0ZSI7czoyNjoiMjAyNi0wMy0xNyAwNDozNjo1NS41ODU1NjgiO3M6ODoidGltZXpvbmUiO3M6MzoiVVRDIjt9fXM6MTI6Im90cF9hdHRlbXB0cyI7aTowO3M6MTI6ImRldmljZV90b2tlbiI7czoxNDI6ImZDZUducHl4SzYwZHZrUFFEMUxfUVI6QVBBOTFiSHg3REZoWEhXd1hMakdURVdOTXEwWEt2eWtNNjJ1OW9UT0VFMjctZF9HUWE4TkN5ZEwtOWdvTGxTb3RDQlYyUWctVEMxb01rUWl2UkhGc3VhemJodGJ1bWN1d0NpTV9CN1RvTEFTWWxlRUs0anprUDgiO3M6MzoidXJsIjthOjE6e3M6ODoiaW50ZW5kZWQiO3M6MzY6Imh0dHBzOi8vaHJtLmRkZXYuc2l0ZS9hZG1pbi9idXNpbmVzcyI7fXM6MTU6ImltcGVyc29uYXRlZF9ieSI7aToxO3M6MTg6ImltcGVyc29uYXRvcl9ndWFyZCI7czozOiJ3ZWIiO3M6MjQ6ImltcGVyc29uYXRvcl9ndWFyZF91c2luZyI7TjtzOjUwOiJsb2dpbl93ZWJfM2RjN2E5MTNlZjVmZDRiODkwZWNhYmUzNDg3MDg1NTczZTE2Y2Y4MiI7aTo4O30=", 1773740207);
 
 /*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -795,9 +917,16 @@ CREATE TABLE `staff` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_staff_business` (`business_id`,`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+LOCK TABLES `staff` WRITE;
+/*!40000 ALTER TABLE `staff` DISABLE KEYS */;
 
+INSERT INTO `staff` (`id`, `business_id`, `user_id`, `employee_identifier`, `job_title`, `salary_type`, `base_salary`, `joining_date`, `created_at`, `updated_at`) VALUES
+	(1, 8, 10, "asdfasq", "asadfas", "monthly", 1000, "2026-03-17", "2026-03-17 06:43:41", "2026-03-17 06:43:41");
+
+/*!40000 ALTER TABLE `staff` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 
@@ -3016,21 +3145,23 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `registration_type` enum('self','admin','import') NOT NULL DEFAULT 'self',
   `created_by_admin` int(11) DEFAULT NULL,
+  `parent_id` bigint(10) DEFAULT NULL,
   `approved_by` int(11) DEFAULT NULL,
   `approved_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `mobile`, `email`, `password`, `image`, `otp`, `otp_expires_at`, `email_verified_at`, `remember_token`, `status`, `created_at`, `updated_at`, `registration_type`, `created_by_admin`, `approved_by`, `approved_at`) VALUES
-	(1, "kamal", "sharma", "8952939854", "kamalji010@gmail.com", "$2y$12$dmVmgIRcXp5NGlT3cp.PUO5uBJdf4TWfaeUihyngUaV5Ec8QzISJy", "profile_images/Q0I0jmHA0ZtgRoeqbFgArM89sTWAwu76oATUPta6.png", NULL, NULL, NULL, NULL, "active", "2025-12-31 10:42:22", "2026-03-12 11:55:08", "self", 1, NULL, "2026-01-06 11:27:32"),
-	(2, "kamal", "sharma", "8952939854", "kamalji020@gmail.com", "$2y$12$M32yoy72ILYLHL5KshKQY.rSwmNwl7e7EhIApzKFMneRUl.xFLswC", NULL, NULL, NULL, NULL, NULL, "active", "2026-01-22 10:20:55", "2026-01-22 10:20:55", "admin", 1, 1, "2026-01-22 10:20:55"),
-	(8, "kumawat", "kumawat", "8952939854", "kumawat.kumar.arun@gmail.com", "$2y$12$XoL6BXwTqQVjwHJx1V4XfurK1TDTdbkeYbf9bZHMfglxWcgHSvbrC", "users/1773479895_69b527d707300.png", NULL, NULL, NULL, NULL, "active", "2026-03-14 09:18:22", "2026-03-14 09:18:22", "admin", 1, 1, "2026-03-14 09:18:15"),
-	(13, "asda", "asdfa", "0987654321", "asdf@afa.d", "$2y$12$Ka.zIo6cA81hCreq81NEW.SX0n4bhSKWy3UjPnEmYu8Y5Bo3iaWBS", "businesses/RZzF5VJhTJcyKBLel04LqqeDQqsiXabSMLG2IKo0.jpg", NULL, NULL, NULL, NULL, "active", "2026-03-16 09:14:29", "2026-03-16 09:14:29", "self", NULL, NULL, NULL),
-	(12, "afa", "asdfa`", "2543532523", "afas@afa.sd", "$2y$12$J8oLuo61m0fPtdjslpzMZejS7XZN8Ae72vGMSNsnM/TUHAI07JCfS", "businesses/EEXdo9mLhuPYOSggJRZeutF56KRVqOBM9Pm8hkzh.png", NULL, NULL, NULL, NULL, "active", "2026-03-16 07:28:39", "2026-03-16 07:28:39", "self", NULL, NULL, NULL);
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `mobile`, `email`, `password`, `image`, `otp`, `otp_expires_at`, `email_verified_at`, `remember_token`, `status`, `created_at`, `updated_at`, `registration_type`, `created_by_admin`, `parent_id`, `approved_by`, `approved_at`) VALUES
+	(1, "kamal", "sharma", "8952939854", "kamalji010@gmail.com", "$2y$12$8AKADKZTS1Eu.Q3SxG061.zn1QQhYhL3/NDBsPZ2QnUx1JxWiS74e", "profile_images/Q0I0jmHA0ZtgRoeqbFgArM89sTWAwu76oATUPta6.png", NULL, NULL, NULL, NULL, "active", "2025-12-31 10:42:22", "2026-03-17 04:44:33", "self", 1, NULL, NULL, "2026-01-06 11:27:32"),
+	(9, "asdfa", "asdfa", "42342342", "242342", "$2y$12$hVuE1IU7s7LzGw.2te.xXuXzeqUPuFBNeTilmSETIYDYKqNOyyC1m", "businesses/WQ25J9y0pfCa9CtMfByT2txiZOctQNB8YMvh76r7.jpg", NULL, NULL, NULL, NULL, "active", "2026-03-17 06:42:17", "2026-03-17 06:42:17", "self", 0, 8, NULL, NULL),
+	(8, "asdfa", "asdfas", "0987654321", "gofite3534@dolofan.com", "$2y$12$SNgPaw6ZSzpFTOug624s0OKcPulP1VthCh3g0L2y.BQ5e8QyDoPYW", "businesses/ErJ7JyeaSYe9JrqI3EUAN0gKpT73kf5Yhsnaz41a.jpg", NULL, NULL, NULL, NULL, "active", "2026-03-17 06:41:46", "2026-03-17 06:41:46", "admin", 1, NULL, NULL, NULL),
+	(10, "asdfa", "asdfa", "324467787", "asdaf@adsfa.som", "$2y$12$bFUpaJb5Rp.QHTSv9q6bVejaxQWsYUgH7NIuCFasOqvjnjikloN8S", "staffs/ln9S3wYp9b0uZ3HZhwadXgLCReq2ZmyyYKoUlOqV.png", NULL, NULL, NULL, NULL, "active", "2026-03-17 06:43:41", "2026-03-17 06:43:41", "self", 0, 8, NULL, NULL),
+	(11, "asdfa", "asdaf", "9876543210", "asdf@asdfa.com", "$2y$12$r/i0Y4BIZ1tM4fFItmWCmeTeYIKHgNW6R9OQAcpVJthpmASK1w3re", "employees/hdv0cpTtvPjWOuPoI9YEYrVDVi6DzCYXyEhHOHX6.jpg", NULL, NULL, NULL, NULL, "active", "2026-03-17 07:06:26", "2026-03-17 07:06:26", "admin", 1, 1, NULL, NULL),
+	(12, "asdfa", "asdaf", "9876543210", "asdf@a2sdfa.com", "$2y$12$j/NqmJ70YuUfP9u6zWFZoeECvQ2yVczgFDNC9ZUZtuu3Dmha1pKpC", "employees/zdXgXwtOgbujQcSMKuDt3YoIiqxj1Y4F5VfhHWZj.jpg", NULL, NULL, NULL, NULL, "active", "2026-03-17 07:09:17", "2026-03-17 07:09:17", "admin", 1, 1, NULL, NULL);
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -3050,4 +3181,4 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
-# Dump completed on 2026-03-16T14:48:34+05:30
+# Dump completed on 2026-03-17T15:08:28+05:30

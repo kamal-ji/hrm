@@ -20,7 +20,9 @@
 
                         <h5 class="mb-3">Update Business</h5>
 
-                        <form action="{{ route('business.update',$user->id) }}" id="createForm" enctype="multipart/form-data">
+                        <form action="{{ route('business.update',$user->id) }}" method="post" id="createForm" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
 
                             {{-- ================= PERSONAL INFO ================= --}}
                             <h4>Personal Information</h4>
@@ -156,7 +158,7 @@
                                     <div class="mb-3">
                                         <label class="form-label">Address Line 1</label>
                                         <input type="text" class="form-control" name="address_line1"
-                                               value="{{ $business->address_line1 }}">
+                                               value="{{ $business->address_line_1 }}">
                                     </div>
                                 </div>
 
@@ -164,7 +166,7 @@
                                     <div class="mb-3">
                                         <label class="form-label">Address Line 2</label>
                                         <input type="text" class="form-control" name="address_line2"
-                                               value="{{ $business->address_line2 }}">
+                                               value="{{ $business->address_line_1 }}">
                                     </div>
                                 </div>
 
@@ -227,11 +229,9 @@
                                 <div class="col-lg-4">
                                     <div class="mb-3">
                                         <label class="form-label">Business Registration Number</label>
-                                        <input type="text" class="form-control" name="registration_number"
-                                               value="{{ $business->registration_number }}">
+                                        <input type="text" class="form-control" name="business_registration_number" value="{{ $business->business_registration_number }}">
                                     </div>
                                 </div>
-
                             </div>
 
 
@@ -292,29 +292,77 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-4">
-                                    <div class="mb-3">
-                                        <label class="form-label">Working Days Per Month</label>
-                                        <input type="number" class="form-control" name="working_days_per_month"
-                                               value="{{ $business->working_days_per_month }}">
+                                <div class="col-md-12">
+                                    <h5 class="fw-bold">Payable Days & Work Hours</h5>
+
+                                    <p class="text-muted mb-4">
+                                        What is the effective payable days per month, work hours per day in your organization?<br>
+                                        We will calculate based on your selection salary / payable days, hourly wage rate = daily wage rate / number of work hours for salary calculation
+                                    </p>
+
+                                    <!-- Options -->
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="working_days_per_month" value="cal-month" id="calendarMonth" {{ $business->working_days_per_month == 'cal-month' ? 'checked' : '' }}>
+                                        <label class="form-check-label fw-semibold" for="calendarMonth">
+                                            Calendar Month
+                                        </label>
+                                        <div class="option-desc">
+                                            Ex: March will have 31 payable days, April will have 30 payable days etc.
+                                        </div>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="working_days_per_month" value="30" id="month30" {{ $business->working_days_per_month == '30' ? 'checked' : '' }}>
+                                        <label class="form-check-label fw-semibold" for="month30">
+                                            Every Month 30 Days
+                                        </label>
+                                        <div class="option-desc">
+                                            Ex: March will have 30 payable days, April will have 30 payable days etc.
+                                        </div>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="working_days_per_month" value="28" id="month28"  {{ $business->working_days_per_month == '28' ? 'checked' : '' }}>
+                                        <label class="form-check-label fw-semibold" for="month28">
+                                            Every Month 28 Days
+                                        </label>
+                                        <div class="option-desc">
+                                            Ex: March will have 28 payable days, April will have 28 payable days etc.
+                                        </div>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="working_days_per_month" value="26" id="month26" {{ $business->working_days_per_month == '26' ? 'checked' : '' }}>
+                                        <label class="form-check-label fw-semibold" for="month26">
+                                            Every Month 26 Days
+                                        </label>
+                                        <div class="option-desc">
+                                            Ex: March will have 26 payable days, April will have 26 payable days etc.
+                                        </div>
+                                    </div>
+
+                                    <div class="form-check mb-4">
+                                        <input class="form-check-input" type="radio" name="working_days_per_month" value="exclude-weekly" id="excludeWeekly" {{ $business->working_days_per_month == 'exclude-weekly' ? 'checked' : '' }}>
+                                        <label class="form-check-label fw-semibold" for="excludeWeekly">
+                                            Exclude Weekly Offs
+                                        </label>
+                                        <div class="option-desc">
+                                            Ex: Month with 31 days and 4 weekly offs will have 27 payable days.
+                                        </div>
                                     </div>
                                 </div>
-
                             </div>
 
 
                             {{-- ================= SUBMIT ================= --}}
                             <div class="d-flex align-items-center justify-content-between pt-4 border-top">
-
                                 <button type="submit" class="btn btn-primary submitBtn">
                                     Update
                                 </button>
 
                                 <div class="spinner-border spinner-border-sm d-none loadingSpinner">
                                 </div>
-
                             </div>
-
                         </form>
 
                     </div>
@@ -326,3 +374,73 @@
 
 </div>
 @endsection
+
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('#createForm').on('submit', async function(e) {
+                e.preventDefault();
+
+                $('.submitBtn').prop('disabled', true);
+                $('.loadingSpinner').removeClass('d-none');
+
+                const formData = new FormData(this);
+
+                $.ajax({
+                    url: this.action,
+                    method: 'POST',
+                    data: formData,
+                    processData: false, // Required for FormData
+                    contentType: false, // Required for FormData
+                    success: function(response) {
+                        if (response.success) {
+                            showSuccess(response.message ||
+                                'Business updated successfully');
+                            window.location.href = response.redirect_url
+                        } else {
+                            showError(response.message || 'Something went wrong');
+                        }
+                    },
+                    error: function(xhr) {
+                        $('.form-error').remove();
+
+                        if (xhr.responseJSON && xhr.responseJSON.errors) {
+                            for (let field in xhr.responseJSON.errors) {
+                                if (xhr.responseJSON.errors.hasOwnProperty(field)) {
+                                    let errorMsg = xhr.responseJSON.errors[field][0];
+
+                                    // Find the field's input or label element
+                                    let fieldElement = $('[name="' + field + '"]');
+
+                                    // Create an error message element
+                                    let errorElement = $('<div class="form-error"></div>')
+                                        .text(errorMsg);
+
+                                    // Append the error message below the field
+                                    fieldElement.after(errorElement);
+                                }
+                            }
+
+                        } else if (xhr.responseJSON.message) {
+                            showError(xhr.responseJSON.message || 'An error occurred');
+                        } else {
+                            // If no specific error, show a generic error
+                            showError('An error occurred');
+                        }
+                    },
+                    complete: function() {
+                        $('.submitBtn').prop('disabled', false);
+                        $('.loadingSpinner').addClass('d-none');
+                    }
+                });
+            });
+        });
+    </script>
+@endpush
