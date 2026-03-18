@@ -196,6 +196,20 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <ul>
+                            <li class="submenu">
+                                <a href="javascript:void(0);" class="">
+                                    <i class="isax isax-user"></i><span>Deductions</span>
+                                    <span class="menu-arrow"></span>
+                                </a>
+                                <ul>
+                                    <li><a href="{{ route('deduction.index') }}" class="">All Deductions</a></li>
+                                    <li><a href="{{ route('deduction.create') }}" class="">Add New Deduction</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
                     @endif
 
                     <!-- Members Management (Your Existing Functionality) -->

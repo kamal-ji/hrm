@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\AllowanceController;
 use App\Http\Controllers\Backend\BusinessController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\DeductionController;
 use App\Http\Controllers\Backend\DepartmentController;
 use App\Http\Controllers\Backend\DesignationController;
 use App\Http\Controllers\Backend\EmployeeController;
@@ -95,6 +96,15 @@ Route::middleware(['auth', 'role:admin|member|employee|staff|business_owner'])->
         Route::get('/{id}/edit', [AllowanceController::class, 'edit'])->name('allowance.edit');
         Route::get('/{id}/delete', [AllowanceController::class, 'destroy'])->name('allowance.destroy');
         Route::put('/{id}', [AllowanceController::class, 'update'])->name('allowance.update');
+    });
+    
+    Route::prefix('deduction')->group(function () {
+        Route::get('/', [DeductionController::class, 'index'])->name('deduction.index');
+        Route::get('/create', [DeductionController::class, 'create'])->name('deduction.create');
+        Route::post('/', [DeductionController::class, 'store'])->name('deduction.store');
+        Route::get('/{id}/edit', [DeductionController::class, 'edit'])->name('deduction.edit');
+        Route::get('/{id}/delete', [DeductionController::class, 'destroy'])->name('deduction.destroy');
+        Route::put('/{id}', [DeductionController::class, 'update'])->name('deduction.update');
     });
 });
 
