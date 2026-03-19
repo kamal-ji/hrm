@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Allowance;
 use App\Models\Deduction;
 use App\Models\Department;
+use App\Models\Designation;
 use App\Models\Staff;
 use App\Models\StaffContribution;
 use App\Models\StaffDeduction;
@@ -37,6 +38,7 @@ class StaffController extends Controller
                 })
                 ->addColumn('actions', function ($staff) {
                     $buttons = '<a href="' . route('staff.edit', $staff->user_id) . '" class="btn btn-sm btn-primary">Edit</a>';
+                    $buttons .= '&nbsp; <a href="' . route('staff.view', $staff->user_id) . '" class="btn btn-sm btn-primary">View</a>';
 
                     if (auth()->user()->hasRole('admin')) {
                         $buttons .= '&nbsp; <a href="' . route('impersonate.start', $staff->user_id) . '" class="btn btn-sm btn-secondary">Impersonate</a>';
@@ -66,7 +68,13 @@ class StaffController extends Controller
     {
         $user = User::with('staff')->findOrFail($id);
         $staff = $user->staff;
-        return view('backend.staff.edit', compact('user', 'staff'));
+
+        $departments = Department::where('business_id', $user->getParentBusiness()->id)->where('is_active', 1)->orderBy('name')->get();
+        $designations = Designation::where('business_id', $user->getParentBusiness()->id)->where('department_id', $staff->department_id)->where('is_active', 1)->orderBy('name')->get();
+        $allowances = Allowance::where('business_id', $user->getParentBusiness()->id)->where('is_active', 1)->orderBy('name')->get();
+        $deductions = Deduction::where('business_id', $user->getParentBusiness()->id)->where('is_active', 1)->orderBy('name')->get();
+
+        return view('backend.staff.edit', compact('user', 'staff', 'departments', 'designations', 'allowances', 'deductions'));
     }
 
     public function store(Request $request)
@@ -85,9 +93,28 @@ class StaffController extends Controller
 
             // Staff
             'employee_identifier' => 'required|string|max:255',
-            'department' => 'required|exists:departments,id',
-            'designation' => 'required|exists:designations,id',
+            'department_id' => 'required|exists:departments,id',
+            'designation_id' => 'required|exists:designations,id',
             'joining_date' => 'required|date',
+            'uan_number' => 'nullable|string|max:255',
+            'pan_number' => 'nullable|string|max:255',
+            'aadhaar_number' => 'nullable|string|max:255',
+            'bank_name' => 'nullable|string|max:255',
+            'bank_ifsc_code' => 'nullable|string|max:255',
+            'bank_ac_holder' => 'nullable|string|max:255',
+            'bank_ac_number' => 'nullable|string|max:255',
+
+            'gender' => 'required|string|max:255',
+            'date_of_birth' => 'required|date',
+            'marital_status' => 'required|string|max:255',
+            'blood_group' => 'required|string|max:255',
+            'emergency_contact' => 'required|string|max:255',
+            'father_name' => 'required|string|max:255',
+            'mother_name' => 'required|string|max:255',
+            'spouse_name' => 'required|string|max:255',
+            'physically_challenged' => 'required',
+            'current' => 'required|array',
+            'permanent' => 'required|array',
 
             // Salary
             'salary_cycle' => 'required',
@@ -130,8 +157,8 @@ class StaffController extends Controller
             'business_id' => $user->parent_id,
             'user_id' => $user->id,
             'employee_identifier' => $request->employee_identifier,
-            'department_id' => $request->department,
-            'designation_id' => $request->designation,
+            'department_id' => $request->department_id,
+            'designation_id' => $request->designation_id,
 
             // You didn’t define base_salary in form → default 0
             'base_salary' => 0,
@@ -148,6 +175,26 @@ class StaffController extends Controller
             'salary_details_access' => $request->salary_details_access,
             'joining_date' => $request->joining_date,
             'is_active' => $request->status === 'active',
+
+            'gender' => $request->gender,
+            'date_of_birth' => $request->date_of_birth,
+            'marital_status' => $request->marital_status,
+            'blood_group' => $request->blood_group,
+            'emergency_contact' => $request->emergency_contact,
+            'father_name' => $request->father_name,
+            'mother_name' => $request->mother_name,
+            'spouse_name' => $request->spouse_name,
+            'physically_challenged' => $request->physically_challenged,
+            'current_address' => $request->current,
+            'permanent_address' => $request->permanent,
+
+            'uan_number' => $request->uan_number,
+            'pan_number' => $request->pan_number,
+            'aadhaar_number' => $request->aadhaar_number,
+            'bank_name' => $request->bank_name,
+            'bank_ifsc_code' => $request->bank_ifsc_code,
+            'bank_ac_holder' => $request->bank_ac_holder,
+            'bank_ac_number' => $request->bank_ac_number,
         ]);
 
         $user->assignRole('staff');
@@ -227,19 +274,46 @@ class StaffController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
+            // User
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'mobile' => 'required|string|max:255',
-            'email' => 'required|string|max:255|unique:users,email,' . $id . ',id',
-            'password' => 'nullable|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'mobile' => 'required|string|max:20',
+            'email' => 'required|email|max:255|unique:users,email,'.$id.',id',
+            'password' => 'nullable|string|min:6',
+            'image' => 'nullable|image|max:2048',
             'status' => 'required|in:active,inactive',
 
+            // Staff
             'employee_identifier' => 'required|string|max:255',
-            'job_title' => 'required|string|max:255',
-            'salary_type' => 'required|string|max:255',
-            'base_salary' => 'required|numeric|min:0',
+            'department_id' => 'required|exists:departments,id',
+            'designation_id' => 'required|exists:designations,id',
             'joining_date' => 'required|date',
+            'uan_number' => 'nullable|string|max:255',
+            'pan_number' => 'nullable|string|max:255',
+            'aadhaar_number' => 'nullable|string|max:255',
+            'bank_name' => 'nullable|string|max:255',
+            'bank_ifsc_code' => 'nullable|string|max:255',
+            'bank_ac_holder' => 'nullable|string|max:255',
+            'bank_ac_number' => 'nullable|string|max:255',
+
+            'gender' => 'required|string|max:255',
+            'date_of_birth' => 'required|date',
+            'marital_status' => 'required|string|max:255',
+            'blood_group' => 'required|string|max:255',
+            'emergency_contact' => 'required|string|max:255',
+            'father_name' => 'required|string|max:255',
+            'mother_name' => 'required|string|max:255',
+            'spouse_name' => 'required|string|max:255',
+            'physically_challenged' => 'required',
+            'current' => 'required|array',
+            'permanent' => 'required|array',
+
+            // Salary
+            'salary_cycle' => 'required',
+            'staff_type' => 'required',
+            'opening_balance' => 'nullable|numeric|min:0',
+            'opening_balance_type' => 'required|in:pending,paid',
+            'salary_details_access' => 'required|boolean',
         ]);
 
         if ($validator->fails()) {
@@ -266,18 +340,125 @@ class StaffController extends Controller
             'status' => $request->status,
         ]);
 
-        $user->staff->update([
+        $staff = $user->staff;
+        
+        $staff->update([
             'employee_identifier' => $request->employee_identifier,
-            'job_title' => $request->job_title,
-            'salary_type' => $request->salary_type,
-            'base_salary' => $request->base_salary,
+            'department_id' => $request->department_id,
+            'designation_id' => $request->designation_id,
+
+            // You didn’t define base_salary in form → default 0
+            'base_salary' => 0,
+
+            // Map from staff_type
+            'salary_type' => str_contains($request->staff_type, 'monthly') ? 'monthly' : 'daily',
+
+            'salary_cycle' => $request->salary_cycle,
+            'staff_type' => $request->staff_type,
+
+            'opening_balance_type' => $request->opening_balance_type,
+            'opening_balance' => $request->opening_balance ?? 0,
+
+            'salary_details_access' => $request->salary_details_access,
             'joining_date' => $request->joining_date,
+            'is_active' => $request->status === 'active',
+
+            'gender' => $request->gender,
+            'date_of_birth' => $request->date_of_birth,
+            'marital_status' => $request->marital_status,
+            'blood_group' => $request->blood_group,
+            'emergency_contact' => $request->emergency_contact,
+            'father_name' => $request->father_name,
+            'mother_name' => $request->mother_name,
+            'spouse_name' => $request->spouse_name,
+            'physically_challenged' => $request->physically_challenged,
+            'current_address' => $request->current,
+            'permanent_address' => $request->permanent,
+            
+            'uan_number' => $request->uan_number,
+            'pan_number' => $request->pan_number,
+            'aadhaar_number' => $request->aadhaar_number,
+            'bank_name' => $request->bank_name,
+            'bank_ifsc_code' => $request->bank_ifsc_code,
+            'bank_ac_holder' => $request->bank_ac_holder,
+            'bank_ac_number' => $request->bank_ac_number,
         ]);
+
+        StaffEarning::where('staff_id', $staff->id)->delete();
+        StaffContribution::where('staff_id', $staff->id)->delete();
+
+        foreach(StaffDeduction::where('staff_id', $staff->id)->get() as $deduction){
+            $deduction->relations()->delete();
+            $deduction->delete();
+        }
+
+        if ($request->has('allowance')) {
+            foreach ($request->allowance as $allowanceId => $data) {
+                if (!isset($data['enabled'])) continue;
+
+                StaffEarning::create([
+                    'staff_id' => $staff->id,
+                    'allowance_id' => $allowanceId,
+                    'amount' => $data['amount'] ?? 0
+                ]);
+            }
+        }
+
+        if ($request->has('deductions')) {
+            foreach ($request->deductions as $deductionId => $data) {
+                if (!isset($data['enabled'])) continue;
+
+                $deduction = StaffDeduction::create([
+                    'staff_id' => $staff->id,
+                    'deduction_id' => $deductionId,
+                    'type' => $data['type'] ?? 'fixed',
+                    'fixed_amount' => $data['fixed_amount'] ?? 0,
+                    'variable_percentage' => $data['variable_percentage'] ?? 0,
+                ]);
+
+                // relations (allowances)
+                $relations = [];
+
+                if ($data['type'] === 'fixed' && isset($data['fixed'])) {
+                    $relations = $data['fixed'];
+                }
+
+                if ($data['type'] === 'variable' && isset($data['variable'])) {
+                    $relations = $data['variable'];
+                }
+
+                foreach ($relations as $allowanceId) {
+                    StaffDeductionRelation::create([
+                        'staff_deduction_id' => $deduction->id,
+                        'allowance_id' => $allowanceId
+                    ]);
+                }
+            }
+        }
+
+        if ($request->has('contributions')) {
+            foreach ($request->contributions as $deductionId => $data) {
+                if (!isset($data['enabled'])) continue;
+
+                StaffContribution::create([
+                    'staff_id' => $staff->id,
+                    'deduction_id' => $deductionId,
+                    'amount' => $data['amount'] ?? 0
+                ]);
+            }
+        }
 
         return response()->json([
             'success' => true,
             'message' => 'Staff updated successfully',
             'redirect_url' => route('staff.index')
         ]);
+    }
+
+    public function view($id){
+        $user = User::find($id);
+        $staff = Staff::where('user_id', $user->id)->first();
+        
+        return view('backend.staff.view', compact('user', 'staff'));
     }
 }

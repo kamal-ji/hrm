@@ -25,7 +25,6 @@
                         <th class="no-sort">Name</th>
                         <th class="no-sort">Email</th>
                         <th class="no-sort">Mobile</th>
-                        <th class="no-sort">Job Title</th>
                         <th class="no-sort">Status</th>
                         <th class="no-sort"></th>
                     </tr>
@@ -77,10 +76,6 @@
                     },
                     {
                         "data": "mobile",
-                        "orderable": false
-                    },
-                    {
-                        "data": "job_title",
                         "orderable": false
                     },
                     {

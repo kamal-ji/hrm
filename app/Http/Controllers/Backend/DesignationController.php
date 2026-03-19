@@ -131,4 +131,9 @@ class DesignationController extends Controller
             'message' => 'Designation deleted successfully'
         ]);
     }
+
+    public function getDesignationsByDepartment(Request $request){
+        $designations = Designation::where('department_id', $request->department_id)->get();
+        return response()->json($designations);
+    }
 }

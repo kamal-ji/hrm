@@ -44,6 +44,8 @@ Route::middleware(['auth', 'role:admin|member|employee|staff|business_owner'])->
     Route::get('/company-settings/delete-favicon', [ProfileController::class, 'deleteCompanyFavicon'])->name('delete.companyfavicon');
     Route::get('/profile/email-setting', [ProfileController::class, 'Emailsetting'])->name('profile.email-setting');
 
+    Route::get('designations_via_department', [DesignationController::class, 'getDesignationsByDepartment'])->name('designations_via_department');
+    
     // Employee Routes
     Route::prefix('employee')->group(function () {
         Route::get('/', [EmployeeController::class, 'index'])->name('employee.index');
@@ -54,7 +56,7 @@ Route::middleware(['auth', 'role:admin|member|employee|staff|business_owner'])->
     });
 
     // Business Routes
-    Route::prefix('business')->group(function () {
+    Route::prefix('business')->group(function(){
         Route::get('/', [BusinessController::class, 'index'])->name('business.index');
         Route::get('/create', [BusinessController::class, 'create'])->name('business.create');
         Route::post('/', [BusinessController::class, 'store'])->name('business.store');
@@ -69,9 +71,10 @@ Route::middleware(['auth', 'role:admin|member|employee|staff|business_owner'])->
         Route::post('/', [StaffController::class, 'store'])->name('staff.store');
         Route::get('/{id}/edit', [StaffController::class, 'edit'])->name('staff.edit');
         Route::put('/{id}', [StaffController::class, 'update'])->name('staff.update');
+        Route::get('/{id}/view', [StaffController::class, 'view'])->name('staff.view');
     });
 
-    Route::prefix('department')->group(function () {
+    Route::prefix('department')->group(function(){
         Route::get('/', [DepartmentController::class, 'index'])->name('department.index');
         Route::get('/create', [DepartmentController::class, 'create'])->name('department.create');
         Route::post('/', [DepartmentController::class, 'store'])->name('department.store');
@@ -80,7 +83,7 @@ Route::middleware(['auth', 'role:admin|member|employee|staff|business_owner'])->
         Route::put('/{id}', [DepartmentController::class, 'update'])->name('department.update');
     });
 
-    Route::prefix('designation')->group(function () {
+    Route::prefix('designation')->group(function(){
         Route::get('/', [DesignationController::class, 'index'])->name('designation.index');
         Route::get('/create', [DesignationController::class, 'create'])->name('designation.create');
         Route::post('/', [DesignationController::class, 'store'])->name('designation.store');
@@ -89,7 +92,7 @@ Route::middleware(['auth', 'role:admin|member|employee|staff|business_owner'])->
         Route::put('/{id}', [DesignationController::class, 'update'])->name('designation.update');
     });
 
-    Route::prefix('allowance')->group(function () {
+    Route::prefix('allowance')->group(function(){
         Route::get('/', [AllowanceController::class, 'index'])->name('allowance.index');
         Route::get('/create', [AllowanceController::class, 'create'])->name('allowance.create');
         Route::post('/', [AllowanceController::class, 'store'])->name('allowance.store');
@@ -98,7 +101,7 @@ Route::middleware(['auth', 'role:admin|member|employee|staff|business_owner'])->
         Route::put('/{id}', [AllowanceController::class, 'update'])->name('allowance.update');
     });
     
-    Route::prefix('deduction')->group(function () {
+    Route::prefix('deduction')->group(function(){
         Route::get('/', [DeductionController::class, 'index'])->name('deduction.index');
         Route::get('/create', [DeductionController::class, 'create'])->name('deduction.create');
         Route::post('/', [DeductionController::class, 'store'])->name('deduction.store');

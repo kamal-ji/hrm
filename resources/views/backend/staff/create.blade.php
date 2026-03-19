@@ -107,6 +107,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Blood Group <span class="text-danger ms-1">*</span></label>
                                             <select class="form-control"  name="blood_group" required>
+                                                <option value="">Select Blood Group</option>
                                                 <option value="A+">A+</option>
                                                 <option value="A-">A-</option>
                                                 <option value="B+">B+</option>
@@ -271,7 +272,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Department <span
                                                     class="text-danger ms-1">*</span></label>
-                                            <select class="form-control" name="department">
+                                            <select class="form-control" name="department_id" onchange="departmentChange()">
                                                 <option value="">Select Department</option>
                                                 @foreach ($departments as $department)
                                                     <option value="{{ $department->id }}">{{ $department->name }}</option>
@@ -284,7 +285,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Designation <span
                                                     class="text-danger ms-1">*</span></label>
-                                            <select class="form-control" name="designation">
+                                            <select class="form-control" name="designation_id">
                                                 <option value="">Select Designation</option>
                                             </select>
                                         </div>
@@ -297,6 +298,63 @@
                                             <input type="date" class="form-control" name="joining_date">
                                         </div>
                                     </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">UAN Number <span
+                                                    class="text-danger ms-1">*</span></label>
+                                            <input type="text" class="form-control" name="uan_number">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">PAN Number <span
+                                                    class="text-danger ms-1">*</span></label>
+                                            <input type="text" class="form-control" name="pan_number">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Aadhar Number <span
+                                                    class="text-danger ms-1">*</span></label>
+                                            <input type="text" class="form-control" name="aadhaar_number">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Bank Name <span
+                                                    class="text-danger ms-1">*</span></label>
+                                            <input type="text" class="form-control" name="bank_name">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Bank IFSC Code <span
+                                                    class="text-danger ms-1">*</span></label>
+                                            <input type="text" class="form-control" name="bank_ifsc_code">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Bank Account Number <span
+                                                    class="text-danger ms-1">*</span></label>
+                                            <input type="text" class="form-control" name="bank_ac_number">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Bank Account Holder <span
+                                                    class="text-danger ms-1">*</span></label>
+                                            <input type="text" class="form-control" name="bank_ac_holder">
+                                        </div>
+                                    </div>
+
                                 </div>
 
                                 <h6 class="mt-4">Salary Information</h6>
@@ -718,6 +776,23 @@
 
             const ctc = allowanceSum + contributionSum;
             jQuery('[xrole="ctc"]').text(ctc);
+        }
+
+        function departmentChange() {
+            const departmentId = jQuery('[name="department_id"]').val();
+            
+            jQuery.ajax({
+                url: "{{ route('designations_via_department') }}?department_id=" + departmentId,
+                method: 'GET',
+                success: function(data) {
+                    jQuery('[name="designation_id"]').empty();
+                    jQuery('[name="designation_id"]').append('<option value="">Select Designation</option>');
+                    
+                    jQuery.each(data, function(key, value) {
+                        jQuery('[name="designation_id"]').append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                }
+            });
         }
     </script>
 @endpush
