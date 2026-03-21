@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Backend\AllowanceController;
+use App\Http\Controllers\Backend\AttendanceGeofenceController;
+use App\Http\Controllers\Backend\AttendanceTemplateController;
 use App\Http\Controllers\Backend\BusinessController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\DeductionController;
@@ -12,7 +14,6 @@ use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\StaffController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\Web\AuthController;
-use App\Http\Controllers\Backend\AttendanceModeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
@@ -111,16 +112,23 @@ Route::middleware(['auth', 'role:admin|member|employee|staff|business_owner'])->
         Route::put('/{id}', [DeductionController::class, 'update'])->name('deduction.update');
     });
 
+    Route::prefix('attendance-template')->group(function(){
+        Route::get('/', [AttendanceTemplateController::class, 'index'])->name('attendance-template.index');
+        Route::get('/create', [AttendanceTemplateController::class, 'create'])->name('attendance-template.create');
+        Route::post('/', [AttendanceTemplateController::class, 'store'])->name('attendance-template.store');
+        Route::get('/{id}/edit', [AttendanceTemplateController::class, 'edit'])->name('attendance-template.edit');
+        Route::get('/{id}/delete', [AttendanceTemplateController::class, 'destroy'])->name('attendance-template.destroy');
+        Route::put('/{id}', [AttendanceTemplateController::class, 'update'])->name('attendance-template.update');
+    });
 
-
-    Route::prefix('attendance-modes')->group(function() {
-      Route::get('/', [AttendanceModeController::class, 'index'])->name('attendance-modes.index');
-      Route::get('/create', [AttendanceModeController::class, 'create'])->name('attendance-modes.create');
-      Route::post('/', [AttendanceModeController::class, 'store'])->name('attendance-modes.store');
-      Route::get('/{id}/edit', [AttendanceModeController::class, 'edit'])->name('attendance-modes.edit');
-      Route::delete('/{id}', [AttendanceModeController::class, 'destroy'])->name('attendance-modes.destroy');
-      Route::put('/{id}', [AttendanceModeController::class, 'update'])->name('attendance-modes.update');
-});
+    Route::prefix('attendance-geofence')->group(function(){
+        Route::get('/', [AttendanceGeofenceController::class, 'index'])->name('attendance-geofence.index');
+        Route::get('/create', [AttendanceGeofenceController::class, 'create'])->name('attendance-geofence.create');
+        Route::post('/', [AttendanceGeofenceController::class, 'store'])->name('attendance-geofence.store');
+        Route::get('/{id}/edit', [AttendanceGeofenceController::class, 'edit'])->name('attendance-geofence.edit');
+        Route::get('/{id}/delete', [AttendanceGeofenceController::class, 'destroy'])->name('attendance-geofence.destroy');
+        Route::put('/{id}', [AttendanceGeofenceController::class, 'update'])->name('attendance-geofence.update');
+    });
 });
 
 // OTP Verification (Protected)
