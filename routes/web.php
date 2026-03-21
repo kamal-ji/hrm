@@ -12,6 +12,7 @@ use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\StaffController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\Web\AuthController;
+use App\Http\Controllers\Backend\AttendanceModeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
@@ -109,6 +110,17 @@ Route::middleware(['auth', 'role:admin|member|employee|staff|business_owner'])->
         Route::get('/{id}/delete', [DeductionController::class, 'destroy'])->name('deduction.destroy');
         Route::put('/{id}', [DeductionController::class, 'update'])->name('deduction.update');
     });
+
+
+
+    Route::prefix('attendance-modes')->group(function() {
+      Route::get('/', [AttendanceModeController::class, 'index'])->name('attendance-modes.index');
+      Route::get('/create', [AttendanceModeController::class, 'create'])->name('attendance-modes.create');
+      Route::post('/', [AttendanceModeController::class, 'store'])->name('attendance-modes.store');
+      Route::get('/{id}/edit', [AttendanceModeController::class, 'edit'])->name('attendance-modes.edit');
+      Route::delete('/{id}', [AttendanceModeController::class, 'destroy'])->name('attendance-modes.destroy');
+      Route::put('/{id}', [AttendanceModeController::class, 'update'])->name('attendance-modes.update');
+});
 });
 
 // OTP Verification (Protected)
