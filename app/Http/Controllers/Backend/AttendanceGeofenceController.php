@@ -37,34 +37,31 @@ class AttendanceGeofenceController extends Controller
     public function store(Request $request){
         $request->validate([
             'name' => 'required',
-            'attendance_mode' => 'required',
-            'attendance_on_holiday' => 'required',
-            'track_in_out_time' => 'required',
-            'no_attendance_without_punch_out' => 'required',
-            'allow_multiple_punches' => 'required',
-            'enable_auto_approval' => 'required',
-            'attendance_items.*' => 'required',
-            'automation_items.*' => 'required',
-            'approval_days' => 'required',
-            'mark_absent_on_previous_days' => 'required',
-            'effective_working_hours' => 'required',
+            'approval_required' => 'required',
+            'sites' => 'required|array',
+            'sites.*.name' => 'required',
+            'sites.*.address' => 'required',
+            'sites.*.radius' => 'required',
+            'sites.*.latitude' => 'required',
+            'sites.*.longitude' => 'required',  
         ]);
         
         $attendanceGeofence = new AttendanceGeofence();
         $attendanceGeofence->business_id = auth()->user()->getParentBusiness()->id;
         $attendanceGeofence->name = $request->name;
-        $attendanceGeofence->attendance_mode = $request->attendance_mode;
-        $attendanceGeofence->attendance_on_holiday = $request->attendance_on_holiday;
-        $attendanceGeofence->track_in_out_time = $request->track_in_out_time;
-        $attendanceGeofence->no_attendance_without_punch_out = $request->no_attendance_without_punch_out;
-        $attendanceGeofence->allow_multiple_punches = $request->allow_multiple_punches;
-        $attendanceGeofence->enable_auto_approval = $request->enable_auto_approval;
-        $attendanceGeofence->attendance_items = $request->attendance_items;
-        $attendanceGeofence->automation_items = $request->automation_items;
-        $attendanceGeofence->approval_days = $request->approval_days;
-        $attendanceGeofence->mark_absent_on_previous_days = $request->mark_absent_on_previous_days;
-        $attendanceGeofence->effective_working_hours = $request->effective_working_hours;
+        $attendanceGeofence->approval_required = $request->approval_required;
         $attendanceGeofence->save();
+
+        // Save sites
+        foreach ($request->sites as $site) {
+            $attendanceGeofence->sites()->create([
+                'name' => $site['name'],
+                'address' => $site['address'],
+                'radius' => $site['radius'],
+                'latitude' => $site['latitude'],
+                'longitude' => $site['longitude'],
+            ]);
+        }
 
         return response()->json([
             'success' => true,
@@ -74,8 +71,8 @@ class AttendanceGeofenceController extends Controller
     }
     
     public function edit(Request $request, $id){
-        $attendanceGeofence  = AttendanceGeofence::find($id);
-        return view('backend.attendance-geofences.edit', compact('attendanceGeofence'));
+        $geofence = AttendanceGeofence::find($id);
+        return view('backend.attendance-geofences.edit', compact('geofence'));
     }
     
     public function update(Request $request, $id){

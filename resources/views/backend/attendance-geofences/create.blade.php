@@ -9,19 +9,19 @@
             right: 0;
             background: #fff;
             border: 1px solid #ddd;
-            z-index: 9999;
+            /* Increase z-index to stay above the map and cards */
+            z-index: 10000;
             max-height: 200px;
             overflow-y: auto;
             border-radius: 6px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .autocomplete-item {
-            padding: 8px 10px;
+            padding: 10px;
             cursor: pointer;
-        }
-
-        .autocomplete-item:hover {
-            background: #f1f1f1;
+            border-bottom: 1px solid #eee;
+            color: #333;
         }
     </style>
     <!-- Start Content -->
@@ -63,54 +63,12 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-12 col-md-12" xrole="sites">
+                                    <div class="col-lg-12 col-md-12 my-2" xrole="sites">
+                                        
+                                    </div>
 
-                                        <!-- ROW 1 -->
-                                        <div class="row site-item">
-                                            <div class="col-md-4 mb-2">
-                                                <label>Site Name</label>
-                                                <input type="text" class="form-control" name="sites[0][name]" required>
-                                            </div>
-
-                                            <div class="col-md-4 mb-2 position-relative">
-                                                <input type="text" class="form-control address-input"
-                                                    name="sites[0][address]" required>
-                                                <div class="autocomplete-list"></div>
-                                            </div>
-
-                                            <div class="col-md-4 mb-2">
-                                                <label>Radius</label>
-                                                <input type="text" class="form-control radius-input"
-                                                    name="sites[0][radius]" required>
-                                            </div>
-
-                                            <div class="col-md-12 mb-2">
-                                                <div class="map" style="height:300px;"></div>
-                                            </div>
-                                        </div>
-
-                                        <!-- ROW 2 -->
-                                        <div class="row site-item">
-                                            <div class="col-md-4 mb-2">
-                                                <input type="text" class="form-control" name="sites[1][name]" required>
-                                            </div>
-
-                                            <div class="col-md-4 mb-2 position-relative">
-                                                <input type="text" class="form-control address-input"
-                                                    name="sites[1][address]" required>
-                                                <div class="autocomplete-list"></div>
-                                            </div>
-
-                                            <div class="col-md-4 mb-2">
-                                                <input type="text" class="form-control radius-input"
-                                                    name="sites[1][radius]" required>
-                                            </div>
-
-                                            <div class="col-md-12 mb-2">
-                                                <div class="map" style="height:300px;"></div>
-                                            </div>
-                                        </div>
-
+                                    <div class="col-lg-12 col-md-12">
+                                        <button type="button" class="btn btn-primary" onclick="addSite()">Add Site</button>
                                     </div>
                                 </div>
 
@@ -206,10 +164,6 @@
     </script>
 
     <script>
-        document.querySelectorAll('.site-item').forEach((site) => {
-            initOpenStreetMaps(site);
-        });
-
         function initOpenStreetMaps(site) {
 
             let addressInput = site.querySelector('.address-input');
@@ -224,6 +178,7 @@
             }).addTo(map);
 
             function setLocation(lat, lng) {
+                
                 if (marker) map.removeLayer(marker);
                 if (circle) map.removeLayer(circle);
 
@@ -234,6 +189,9 @@
                 circle = L.circle([lat, lng], {
                     radius: radius
                 }).addTo(map);
+
+                site.querySelector('.latitude-input').value = lat;
+                site.querySelector('.longitude-input').value = lng;
             }
 
             // Map click
@@ -244,7 +202,7 @@
             // Radius change
             radiusInput.addEventListener('input', () => {
                 if (marker) {
-                    setLocation(marker.getLatLng().lat, marker.getLatLng().lng);
+                    setLocation(marker.getLatLng().lat, marker.getLatLng().lng, radiusInput);
                 }
             });
 
@@ -261,7 +219,6 @@
             // Typing event (auto search)
             addressInput.addEventListener('input', function() {
                 let query = this.value.trim();
-
                 clearTimeout(debounceTimer);
 
                 if (query.length < 3) {
@@ -270,14 +227,23 @@
                 }
 
                 debounceTimer = setTimeout(() => {
-
+                    // Nominatim prefers specific headers or params to identify the requester
                     fetch(
-                            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=in&limit=5`
-                            )
-                        .then(res => res.json())
+                            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=in&limit=5&addressdetails=1`)
+                        .then(res => {
+                            if (!res.ok) throw new Error("Rate limit or API error");
+                            return res.json();
+                        })
                         .then(data => {
-
                             autocompleteBox.innerHTML = '';
+
+                            if (data.length === 0) {
+                                let noResult = document.createElement('div');
+                                noResult.className = 'autocomplete-item text-muted';
+                                noResult.innerText = 'No results found';
+                                autocompleteBox.appendChild(noResult);
+                                return;
+                            }
 
                             data.forEach(place => {
                                 let item = document.createElement('div');
@@ -285,22 +251,23 @@
                                 item.innerText = place.display_name;
 
                                 item.addEventListener('click', () => {
-                                    let lat = parseFloat(place.lat);
-                                    let lon = parseFloat(place.lon);
+                                    const lat = parseFloat(place.lat);
+                                    const lon = parseFloat(place.lon);
 
                                     addressInput.value = place.display_name;
-                                    autocompleteBox.innerHTML = '';
+                                    autocompleteBox.innerHTML = ''; // Clear list
 
-                                    map.setView([lat, lon], 15);
+                                    map.setView([lat, lon], 17); // Zoom in closer
                                     setLocation(lat, lon);
                                 });
 
                                 autocompleteBox.appendChild(item);
                             });
-
+                        })
+                        .catch(err => {
+                            console.error("Autocomplete error:", err);
                         });
-
-                }, 400); // debounce
+                }, 500); // Increased debounce to 500ms for API safety
             });
 
             // Address search (Enter key)
@@ -347,5 +314,37 @@
                 }
             });
         }
+
+        function addSite() {
+            jQuery('[xrole="sites"]').append(`
+                <div class="row site-item">
+                    <input type="hidden" class="latitude-input" name="sites[${jQuery('[xrole="sites"] .site-item').length}][latitude]">
+                    <input type="hidden" class="longitude-input" name="sites[${jQuery('[xrole="sites"] .site-item').length}][longitude]">
+                    
+                    <div class="col-md-4 mb-2">
+                        <label class="form-label">Site Name</label>
+                        <input type="text" class="form-control" name="sites[${jQuery('[xrole="sites"] .site-item').length}][name]" required>
+                    </div>
+                    <div class="col-md-4 mb-2 position-relative">
+                        <label class="form-label">Address</label>
+                        <input type="text" class="form-control address-input" name="sites[${jQuery('[xrole="sites"] .site-item').length}][address]" required>
+                        <div class="autocomplete-list"></div>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <label class="form-label">Radius (meters)</label>
+                        <input type="text" class="form-control radius-input" name="sites[${jQuery('[xrole="sites"] .site-item').length}][radius]" required>
+                    </div>
+                    <div class="col-md-12 mb-2">
+                        <div class="map" style="height:300px;"></div>
+                    </div>
+                </div>
+            `);
+
+            initOpenStreetMaps(document.querySelector('[xrole="sites"] .site-item:last-child'));
+        }
+
+        window.addEventListener('load', function() {
+            addSite();
+        });
     </script>
 @endpush

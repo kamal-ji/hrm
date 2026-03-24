@@ -5,13 +5,13 @@
     <div class="content content-two">
         <div class="d-flex d-block align-items-center justify-content-between flex-wrap gap-3 mb-3">
             <div>
-                <h6>📦 Attendance Template List</h6>
+                <h6>📦 Attendance Geofence List</h6>
             </div>
             <div class="d-flex my-xl-auto right-content align-items-center flex-wrap gap-2">
 
                 <div>
-                    <a href="{{ route('attendance-template.create') }}" class="btn btn-primary d-flex align-items-center">
-                        <i class="isax isax-add-circle5 me-1"></i> Add Attendance Template
+                    <a href="{{ route('attendance-geofence.create') }}" class="btn btn-primary d-flex align-items-center">
+                        <i class="isax isax-add-circle5 me-1"></i> Add Attendance Geofence
                     </a>
                 </div>
             </div>
@@ -23,8 +23,6 @@
                 <thead class="thead-light">
                     <tr>
                         <th class="no-sort">Name</th>
-                        <th class="no-sort">Attendance Mode</th>
-                        <th class="no-sort">Attendance on Holidays</th>
                         <th class="no-sort"></th>
                     </tr>
                 </thead>
@@ -70,14 +68,6 @@
                         "orderable": false
                     },
                     {
-                        "data": "attendance_mode",
-                        "orderable": false
-                    },
-                    {
-                        "data": "attendance_on_holiday",
-                        "orderable": false
-                    },
-                    {
                         "data": "actions",
                         "orderable": false
                     }
@@ -87,7 +77,7 @@
                     $('.dataTables_filter').appendTo('.search-input');
                 },
                 "ajax": {
-                    "url": "{{ route('attendance-template.index') }}",
+                    "url": "{{ route('attendance-geofence.index') }}",
                     "type": "GET"
                 }
             });

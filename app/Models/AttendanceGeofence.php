@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\AttendanceGeofenceSite;
 use Illuminate\Database\Eloquent\Model;
 
 class AttendanceGeofence extends Model
@@ -11,26 +12,20 @@ class AttendanceGeofence extends Model
     protected $fillable = [
         'business_id',
         'name',
-        'attendance_mode',
-        'attendance_on_holiday',
-        'track_in_out_time',
-        'no_attendance_without_punch_out',
-        'allow_multiple_punches',
-        'enable_auto_approval',
-        'attendance_items',
-        'automation_items',
-        'approval_days',
-        'mark_absent_on_previous_days',
-        'effective_working_hours',
+        'approval_required',
     ];
     
     protected $casts = [
-        'attendance_items' => 'array',
-        'automation_items' => 'array',
+        'approval_required' => 'boolean',
     ];
 
     public function business()
     {
         return $this->belongsTo(Business::class);
+    }
+    
+    public function sites()
+    {
+        return $this->hasMany(AttendanceGeofenceSite::class);
     }
 }
