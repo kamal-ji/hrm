@@ -210,6 +210,20 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <ul>
+                            <li class="submenu">
+                                <a href="javascript:void(0);" class="">
+                                    <i class="isax isax-user"></i><span>Settings</span>
+                                    <span class="menu-arrow"></span>
+                                </a>
+                                <ul>
+                                    <li><a href="{{ route('attendance-template.index') }}" class="">Attendance Template</a></li>
+                                    <li><a href="{{ route('attendance-geofence.index') }}" class="">Geofence</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
                     @endif
 
                     <!-- Members Management (Your Existing Functionality) -->
