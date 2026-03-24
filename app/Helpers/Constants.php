@@ -135,4 +135,143 @@ class Constants
             ],
         ];
     }
+
+    const SHIFT_TYPE_FIXED = 1;
+    const SHIFT_TYPE_OPEN = 2;
+    const SHIFT_TYPE_ROTATIONAL = 3;
+
+    public static function getShiftTypes()
+    {
+        return [
+            [
+                'id' => self::SHIFT_TYPE_FIXED,
+                'name' => 'Fixed',
+            ],
+            [
+                'id' => self::SHIFT_TYPE_OPEN,
+                'name' => 'Open',
+            ],
+            [
+                'id' => self::SHIFT_TYPE_ROTATIONAL,
+                'name' => 'Rotational',
+            ],
+        ];
+    }
+
+    const PAY_TYPE_PAID = 1;
+    const PAY_TYPE_UNPAID = 2;
+
+    public static function getPayTypes()
+    {
+        return [
+            [
+                'id' => self::PAY_TYPE_PAID,
+                'name' => 'Paid',
+            ],
+            [
+                'id' => self::PAY_TYPE_UNPAID,
+                'name' => 'Unpaid',
+            ],
+        ];
+    }
+
+    const AMOUNT_TYPE_FIXED = 1;
+    const AMOUNT_TYPE_PERCENT = 2;
+
+    public static function getAmountTypes()
+    {
+        return [
+            [
+                'id' => self::AMOUNT_TYPE_FIXED,
+                'name' => 'Fixed',
+            ],
+            [
+                'id' => self::AMOUNT_TYPE_PERCENT,
+                'name' => 'Percentage',
+            ],
+        ];
+    }
+
+    const TIME_PERIOD_DURATION = 1;
+    const TIME_PERIOD_INTERVAL = 2;
+
+    public static function getTimePeriodTypes()
+    {
+        return [
+            [
+                'id' => self::TIME_PERIOD_DURATION,
+                'name' => 'Duration',
+            ],
+            [
+                'id' => self::TIME_PERIOD_INTERVAL,
+                'name' => 'Interval',
+            ],
+        ];
+    }
+
+    const LATE_ENTRY_DEDUCT_SOME_SALARY = 1;
+    const LATE_ENTRY_DEDUCT_HALF_SALARY = 2;
+    const LATE_ENTRY_DEDUCT_FULL_SALARY = 3;
+
+    public static function getLateEntryDeductions(){
+        return [
+            [
+                'id' => self::LATE_ENTRY_DEDUCT_SOME_SALARY,
+                'name' => 'Deduct salary if staff is late by more than',
+            ],
+            [
+                'id' => self::LATE_ENTRY_DEDUCT_HALF_SALARY,
+                'name' => 'Deduct half day salary if staff is late by more than',
+            ],
+            [
+                'id' => self::LATE_ENTRY_DEDUCT_FULL_SALARY,
+                'name' => 'Deduct full day salary if staff is late by more than',
+            ],
+        ];
+    }
+
+    public static function getName($type, $code, $default = null){
+        $array = [];
+
+        switch($type){
+            case 'attendance_mode':
+                $array = self::getAttendanceModes();
+                break;
+            case 'holidy_attendance_mode':
+                $array = self::getHolidayAttendanceModes();
+                break;
+            case 'attendance_item':
+                $array = self::getAttendanceItems();
+                break;
+            case 'automation_item':
+                $array = self::getAutomationItems();
+                break;
+            case 'effective_working_hour':
+                $array = self::getEffectiveWorkingHours();
+                break;
+            case 'shift_type':
+                $array = self::getShiftTypes();
+                break;
+            case 'pay_type':
+                $array = self::getPayTypes();
+                break;
+            case 'late_entry_deduct':
+                $array = self::getLateEntryDeductions();
+                break;
+            case 'time_period':
+                $array = self::getTimePeriodTypes();
+                break;
+            case 'amount_type':
+                $array = self::getAmountTypes();
+                break;
+        }
+
+        foreach($array as $item){
+            if($item['id'] == $code){
+                return $item['name'];
+            }
+        }
+
+        return $default;
+    }
 }

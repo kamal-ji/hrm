@@ -1,9 +1,11 @@
-<div class="dropdown">
-    <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="fas fa-ellipsis-v"></i>
-    </button>
-    <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="{{ route('attendance-geofence.edit', $geofence->id) }}">Edit</a></li>
-        <li><a class="dropdown-item" href="{{ route('attendance-geofence.destroy', $geofence->id) }}">Delete</a></li>
-    </ul>
-</div>
+<a href="javascript:void(0);" data-bs-toggle="dropdown">
+    <i class="isax isax-more"></i>
+</a>
+<ul class="dropdown-menu">
+    <li>
+        <a href="{{ route('attendance-geofence.edit', $template->id) }}" class="dropdown-item d-flex align-items-center"><i class="isax isax-edit me-2"></i>Edit</a>
+    </li>
+    <li>
+        <a href="{{ route('attendance-geofence.destroy', $template->id) }}" class="dropdown-item d-flex align-items-center"><i class="isax isax-trash me-2"></i>Delete</a>
+    </li>
+</ul>

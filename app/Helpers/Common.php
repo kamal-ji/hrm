@@ -74,3 +74,29 @@ if (!function_exists('numberToWords')) {
     }
 }
 
+if (!function_exists('hour_minute')) {
+    function hour_minute($payload, $extract = false)
+    {
+        if($payload){
+            $splitX = explode(':', $payload);
+
+            if($extract){
+                switch($extract){
+                    case 'h':
+                        $extract = 0;
+                        break;
+                    case 'm':
+                        $extract = 1;
+                        break;
+                    default:
+                        return null;
+                }
+                return $splitX[$extract];
+            }
+
+            return $splitX;
+        }
+
+        return null;
+    }
+}

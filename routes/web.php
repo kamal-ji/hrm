@@ -12,6 +12,7 @@ use App\Http\Controllers\Backend\EmployeeController;
 use App\Http\Controllers\Backend\ImpersonationController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\StaffController;
+use App\Http\Controllers\Backend\ShiftTemplateController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\Web\AuthController;
 use Illuminate\Support\Facades\Route;
@@ -128,6 +129,15 @@ Route::middleware(['auth', 'role:admin|member|employee|staff|business_owner'])->
         Route::get('/{id}/edit', [AttendanceGeofenceController::class, 'edit'])->name('attendance-geofence.edit');
         Route::get('/{id}/delete', [AttendanceGeofenceController::class, 'destroy'])->name('attendance-geofence.destroy');
         Route::put('/{id}', [AttendanceGeofenceController::class, 'update'])->name('attendance-geofence.update');
+    });
+
+    Route::prefix('shift-template')->group(function(){
+        Route::get('/', [ShiftTemplateController::class, 'index'])->name('shift-template.index');
+        Route::get('/create', [ShiftTemplateController::class, 'create'])->name('shift-template.create');
+        Route::post('/', [ShiftTemplateController::class, 'store'])->name('shift-template.store');
+        Route::get('/{id}/edit', [ShiftTemplateController::class, 'edit'])->name('shift-template.edit');
+        Route::get('/{id}/delete', [ShiftTemplateController::class, 'destroy'])->name('shift-template.destroy');
+        Route::put('/{id}', [ShiftTemplateController::class, 'update'])->name('shift-template.update');
     });
 });
 
