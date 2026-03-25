@@ -143,14 +143,14 @@
                                                     <select class="form-control" id="open_shift_work_hour"
                                                         name="open_shift_work_hour">
                                                         <option value="">Hours</option>
-                                                        @for ($i = 1; $i < 24; $i++)
+                                                        @for ($i = 0; $i < 24; $i++)
                                                             <option value="{{ $i }}" {{ hour_minute($template->open_shift_work_hour, 'h') == $i ? 'selected' : '' }}>{{ $i }}</option>
                                                         @endfor
                                                     </select>
                                                     <select class="form-control" id="open_shift_work_minute"
                                                         name="open_shift_work_minute">
                                                         <option value="">Minutes</option>
-                                                        @for ($i = 1; $i < 60; $i++)
+                                                        @for ($i = 0; $i < 60; $i++)
                                                             <option value="{{ $i }}" {{ hour_minute($template->open_shift_work_hour, 'm') == $i ? 'selected' : '' }}>{{ $i }}
                                                             </option>
                                                         @endfor

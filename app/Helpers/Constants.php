@@ -192,6 +192,23 @@ class Constants
         ];
     }
 
+    const DEDUCTION_AMOUNT_TYPE_FIXED = 1;
+    const DEDUCTION_AMOUNT_TYPE_MULTIPLIER = 2;
+
+    public static function getDeductionAmountTypes()
+    {
+        return [
+            [
+                'id' => self::DEDUCTION_AMOUNT_TYPE_FIXED,
+                'name' => 'Fixed',
+            ],
+            [
+                'id' => self::DEDUCTION_AMOUNT_TYPE_MULTIPLIER,
+                'name' => 'Multiplier',
+            ],
+        ];
+    }
+
     const TIME_PERIOD_DURATION = 1;
     const TIME_PERIOD_INTERVAL = 2;
 
@@ -230,6 +247,90 @@ class Constants
         ];
     }
 
+    const EARLY_EXIT_DEDUCT_SOME_SALARY = 1;
+    const EARLY_EXIT_DEDUCT_HALF_SALARY = 2;
+    const EARLY_EXIT_DEDUCT_FULL_SALARY = 3;
+
+    public static function getEarlyExitDeductions(){
+        return [
+            [
+                'id' => self::EARLY_EXIT_DEDUCT_SOME_SALARY,
+                'name' => 'Deduct salary if staff leaves early by more than',
+            ],
+            [
+                'id' => self::EARLY_EXIT_DEDUCT_HALF_SALARY,
+                'name' => 'Deduct half day salary if staff leaves early by more than',
+            ],
+            [
+                'id' => self::EARLY_EXIT_DEDUCT_FULL_SALARY,
+                'name' => 'Deduct full day salary if staff leaves early by more than',
+            ],
+        ];
+    }
+
+    const BREAK_DEDUCT_SOME_SALARY = 1;
+    const BREAK_DEDUCT_HALF_SALARY = 2;
+    const BREAK_DEDUCT_FULL_SALARY = 3;
+
+    public static function getBreakDeductions(){
+        return [
+            [
+                'id' => self::BREAK_DEDUCT_SOME_SALARY,
+                'name' => 'Deduct salary if staff takes breaks more than',
+            ],
+            [
+                'id' => self::BREAK_DEDUCT_HALF_SALARY,
+                'name' => 'Deduct half day salary if staff takes breaks more than',
+            ],
+            [
+                'id' => self::BREAK_DEDUCT_FULL_SALARY,
+                'name' => 'Deduct full day salary if staff takes breaks more than',
+            ],
+        ];
+    }
+
+    const OVERTIME_SOME_SALARY = 1;
+    const OVERTIME_HALF_SALARY = 2;
+    const OVERTIME_FULL_SALARY = 3;
+
+    public static function getOvertimePayTypes(){
+        return [
+            [
+                'id' => self::OVERTIME_SOME_SALARY,
+                'name' => 'Give overtime if staff works more than',
+            ],
+            [
+                'id' => self::OVERTIME_HALF_SALARY,
+                'name' => 'Give half day overtime if staff works more than',
+            ],
+            [
+                'id' => self::OVERTIME_FULL_SALARY,
+                'name' => 'Give full day overtime if staff works more than',
+            ],
+        ];
+    }
+
+    const EARLY_OVERTIME_SOME_SALARY = 1;
+    const EARLY_OVERTIME_HALF_SALARY = 2;
+    const EARLY_OVERTIME_FULL_SALARY = 3;
+
+    public static function getEarlyOvertimePayTypes(){
+        return [
+            [
+                'id' => self::EARLY_OVERTIME_SOME_SALARY,
+                'name' => 'Give overtime if staff work before shift start by more than',
+            ],
+            [
+                'id' => self::EARLY_OVERTIME_HALF_SALARY,
+                'name' => 'Give half day overtime if staff work before shift start by more than',
+            ],
+            [
+                'id' => self::EARLY_OVERTIME_FULL_SALARY,
+                'name' => 'Give full day overtime if staff work before shift start by more than',
+            ],
+        ];
+    }
+
     public static function getName($type, $code, $default = null){
         $array = [];
 
@@ -258,11 +359,23 @@ class Constants
             case 'late_entry_deduct':
                 $array = self::getLateEntryDeductions();
                 break;
+            case 'early_exit_deduct':
+                $array = self::getEarlyExitDeductions();
+                break;
+            case 'break_deduct':
+                $array = self::getBreakDeductions();
+                break;
+            case 'overtime':
+                $array = self::getOvertimePayTypes();
+                break;
             case 'time_period':
                 $array = self::getTimePeriodTypes();
                 break;
             case 'amount_type':
                 $array = self::getAmountTypes();
+                break;
+            case 'early_overtime':
+                $array = self::getEarlyOvertimePayTypes();
                 break;
         }
 

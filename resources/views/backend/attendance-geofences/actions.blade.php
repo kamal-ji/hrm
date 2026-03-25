@@ -3,9 +3,9 @@
 </a>
 <ul class="dropdown-menu">
     <li>
-        <a href="{{ route('attendance-geofence.edit', $template->id) }}" class="dropdown-item d-flex align-items-center"><i class="isax isax-edit me-2"></i>Edit</a>
+        <a href="{{ route('attendance-geofence.edit', $geofence->id) }}" class="dropdown-item d-flex align-items-center"><i class="isax isax-edit me-2"></i>Edit</a>
     </li>
     <li>
-        <a href="{{ route('attendance-geofence.destroy', $template->id) }}" class="dropdown-item d-flex align-items-center"><i class="isax isax-trash me-2"></i>Delete</a>
+        <a href="{{ route('attendance-geofence.destroy', $geofence->id) }}" class="dropdown-item d-flex align-items-center"><i class="isax isax-trash me-2"></i>Delete</a>
     </li>
 </ul>

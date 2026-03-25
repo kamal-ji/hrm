@@ -85,18 +85,14 @@ function helper_attr_rev_init() {
                     var arr = [];
 
                     container
-                        .querySelectorAll(relative.getAttribute('data-ha-relative'))
+                        .querySelectorAll(relative.getAttribute('data-ha-selector'))
                         .forEach(function (elem0) {
-
-                            // Handle radio & checkbox
                             if (
                                 elem0.tagName === 'INPUT' && ['radio', 'checkbox'].includes(elem0.type)
                             ) {
                                 if (elem0.checked) {
                                     arr.push(elem0.value);
                                 }
-
-                                // Handle multi-select
                             } else if (
                                 elem0.tagName === 'SELECT' &&
                                 elem0.multiple
@@ -104,12 +100,9 @@ function helper_attr_rev_init() {
                                 Array.from(elem0.selectedOptions).forEach(function (option) {
                                     arr.push(option.value);
                                 });
-
-                                // Handle normal inputs/selects
                             } else {
                                 arr.push(elem0.value);
                             }
-
                         });
                     to_enable = (arr.indexOf(relative.getAttribute('data-ha-in')) > -1) ? true : false;
                 } else if (relative.getAttribute('data-ha-var')) {

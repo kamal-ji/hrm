@@ -13,6 +13,7 @@ use App\Http\Controllers\Backend\ImpersonationController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\StaffController;
 use App\Http\Controllers\Backend\ShiftTemplateController;
+use App\Http\Controllers\Backend\AutomationRuleController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\Web\AuthController;
 use Illuminate\Support\Facades\Route;
@@ -138,6 +139,15 @@ Route::middleware(['auth', 'role:admin|member|employee|staff|business_owner'])->
         Route::get('/{id}/edit', [ShiftTemplateController::class, 'edit'])->name('shift-template.edit');
         Route::get('/{id}/delete', [ShiftTemplateController::class, 'destroy'])->name('shift-template.destroy');
         Route::put('/{id}', [ShiftTemplateController::class, 'update'])->name('shift-template.update');
+    });
+
+    Route::prefix('automation-rule')->group(function(){
+        Route::get('/', [AutomationRuleController::class, 'index'])->name('automation-rule.index');
+        Route::get('/create', [AutomationRuleController::class, 'create'])->name('automation-rule.create');
+        Route::post('/', [AutomationRuleController::class, 'store'])->name('automation-rule.store');
+        Route::get('/{id}/edit', [AutomationRuleController::class, 'edit'])->name('automation-rule.edit');
+        Route::get('/{id}/delete', [AutomationRuleController::class, 'destroy'])->name('automation-rule.destroy');
+        Route::put('/{id}', [AutomationRuleController::class, 'update'])->name('automation-rule.update');
     });
 });
 
