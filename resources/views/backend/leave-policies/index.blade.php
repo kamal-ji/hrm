@@ -23,6 +23,9 @@
                 <thead class="thead-light">
                     <tr>
                         <th class="no-sort">Name</th>
+                         <th class="no-sort">Total Leaves</th>
+                         <th class="no-sort">Assigned Staff</th>
+                         <th class="no-sort">Status</th>
                         <th class="no-sort"></th>
                     </tr>
                 </thead>
@@ -65,6 +68,18 @@
                 "columns": [
                     {
                         "data": "name",
+                        "orderable": false
+                    },
+                    {
+                        "data": "total_leaves",
+                        "orderable": false
+                    },
+                     {
+                        "data": "assigned_staff",
+                        "orderable": false
+                    },
+                     {
+                        "data": "status",
                         "orderable": false
                     },
                     {

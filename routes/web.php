@@ -11,6 +11,7 @@ use App\Http\Controllers\Backend\DepartmentController;
 use App\Http\Controllers\Backend\DesignationController;
 use App\Http\Controllers\Backend\EmployeeController;
 use App\Http\Controllers\Backend\HolidayTemplateController;
+use App\Http\Controllers\Backend\LeavePolicyController;
 use App\Http\Controllers\Backend\ImpersonationController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\ShiftTemplateController;
@@ -158,6 +159,15 @@ Route::middleware(['auth', 'role:admin|member|employee|staff|business_owner'])->
         Route::get('/{id}/edit', [HolidayTemplateController::class, 'edit'])->name('holiday-template.edit');
         Route::get('/{id}/delete', [HolidayTemplateController::class, 'destroy'])->name('holiday-template.destroy');
         Route::put('/{id}', [HolidayTemplateController::class, 'update'])->name('holiday-template.update');
+    });
+
+    Route::prefix('leave-policy')->group(function(){
+        Route::get('/', [LeavePolicyController::class, 'index'])->name('leave-policy.index');
+        Route::get('/create', [LeavePolicyController::class, 'create'])->name('leave-policy.create');
+        Route::post('/', [LeavePolicyController::class, 'store'])->name('leave-policy.store');
+        Route::get('/{id}/edit', [LeavePolicyController::class, 'edit'])->name('leave-policy.edit');
+        Route::get('/{id}/delete', [LeavePolicyController::class, 'destroy'])->name('leave-policy.destroy');
+        Route::put('/{id}', [LeavePolicyController::class, 'update'])->name('leave-policy.update');
     });
 });
 

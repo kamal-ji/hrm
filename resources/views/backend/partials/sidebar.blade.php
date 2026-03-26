@@ -429,7 +429,7 @@
                         <ul>
                             <li class="submenu">
                                 <a href="javascript:void(0);">
-                                    <i class="isax isax-setting-25"></i><span>System Settings</span>
+                                    <i class="isax isax-setting-25"></i><span>Attendance Settings</span>
                                     <span class="menu-arrow"></span>
                                 </a>
                                 <ul>
@@ -443,7 +443,19 @@
                                     <li><a href="{{ route('attendance-geofence.index') }}" class="">Geofence</a></li>
                                     <li><a href="{{ route('shift-template.index') }}" class="">Shift Template</a></li>
                                     <li><a href="{{ route('automation-rule.index') }}" class="">Automation Rule</a></li>
-                                    <li><a href="{{ route('holiday-template.index') }}" class="">Holiday Template</a></li>
+                                   
+                                </ul>
+                            </li>
+
+                            <li class="submenu">
+                                <a href="javascript:void(0);">
+                                    <i class="isax isax-briefcase"></i><span>Business Settings</span>
+                                    <span class="menu-arrow"></span>
+                                </a>
+                                <ul>
+                                    <li><a href="{{ route('holiday-template.index') }}" class="">Holiday policy</a></li>
+                                    <li><a href="{{ route('leave-policy.index') }}">Leave Policy</a></li>
+                                  
                                 </ul>
                             </li>
 

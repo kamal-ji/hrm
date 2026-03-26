@@ -3,9 +3,9 @@
 </a>
 <ul class="dropdown-menu">
     <li>
-        <a href="{{ route('leave-policies.edit', $policy->id) }}" class="dropdown-item d-flex align-items-center"><i class="isax isax-edit me-2"></i>Edit</a>
+        <a href="{{ route('leave-policy.edit', $policy->id) }}" class="dropdown-item d-flex align-items-center"><i class="isax isax-edit me-2"></i>Edit</a>
     </li>
     <li>
-        <a href="{{ route('leave-policies.destroy', $policy->id) }}" class="dropdown-item d-flex align-items-center"><i class="isax isax-trash me-2"></i>Delete</a>
+        <a href="{{ route('leave-policy.destroy', $policy->id) }}" class="dropdown-item d-flex align-items-center"><i class="isax isax-trash me-2"></i>Delete</a>
     </li>
 </ul>

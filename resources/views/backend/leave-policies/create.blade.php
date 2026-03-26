@@ -149,36 +149,56 @@
 
     <script>
         var leaveCategoryCount = 0;
-        function addLeaveCategory() {
-            jQuery('[xrole="leave_categories"]').append(`
-                <tr xrole="leave_category">
-                    <td>
-                        <input type="text" class="form-control" name="categories[${leaveCategoryCount}][name]" placeholder="Leave Type">
-                    </td>
-                    <td>
-                        <input type="number" class="form-control" name="categories[${leaveCategoryCount}][max_leave]" placeholder="Max Leave">
-                    </td>
-                    <td>
-                        <select class="form-control" name="categories[${leaveCategoryCount}][unused_leave_rule]">
-                            @foreach(\App\Helpers\Constants::getLeavePolicyUnusedLeaveRules() as $rule)
-                                <option value="{{ $rule['id'] }}">{{ $rule['name'] }}</option>
-                            @endforeach
-                        </select>
-                    </td>
-                    <td>
-                        <input type="number" class="form-control" name="categories[${leaveCategoryCount}][carry_forward_limit]" placeholder="Carry Forward Limit">
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-danger" onclick="removeLeaveCategory(this)">Remove</button>
-                    </td>
-                </tr>
-            `);
+       function addLeaveCategory() {
+    jQuery('[xrole="leave_categories"]').append(`
+        <tr xrole="leave_category">
+            <td>
+                <input type="text" class="form-control" name="categories[${leaveCategoryCount}][name]" placeholder="eg. Casual Leave">
+            </td>
+            <td>
+                <input type="number" class="form-control" name="categories[${leaveCategoryCount}][max_leave]" placeholder="Leave count">
+            </td>
+            <td>
+                <select class="form-control leaverule" name="categories[${leaveCategoryCount}][unused_leave_rule]">
+                    @foreach(\App\Helpers\Constants::getLeavePolicyUnusedLeaveRules() as $rule)
+                        <option value="{{ $rule['id'] }}">{{ $rule['name'] }}</option>
+                    @endforeach
+                </select>
+            </td>
+            <td>
+                <div class="input-group">
+                    <input type="number" 
+                        class="form-control carry_forward_limit" 
+                        name="categories[${leaveCategoryCount}][carry_forward_limit]" 
+                        placeholder="Carry Forward Limit" 
+                        readonly>
+                    <span class="input-group-text">Days</span>
+                </div>
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger" onclick="removeLeaveCategory(this)">Remove</button>
+            </td>
+        </tr>
+    `);
 
-            leaveCategoryCount++;
-        }
+    leaveCategoryCount++;
+}
         
         function removeLeaveCategory(button) {
             button.closest('tr').remove();
         }
+
+      
+    jQuery(document).on('change', '.leaverule', function () {
+        var selectedText = jQuery(this).find('option:selected').text().toLowerCase();
+        var row = jQuery(this).closest('tr');
+        var input = row.find('.carry_forward_limit');
+
+        if (selectedText.includes('expire')) {
+            input.prop('readonly', true).val('');
+        } else {
+            input.prop('readonly', false);
+        }
+    });
     </script>
 @endpush
