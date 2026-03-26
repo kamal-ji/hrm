@@ -5,13 +5,13 @@
     <div class="content content-two">
         <div class="d-flex d-block align-items-center justify-content-between flex-wrap gap-3 mb-3">
             <div>
-                <h6>📦 Automation Rules</h6>
+                <h6>📦 Leave Policies List</h6>
             </div>
             <div class="d-flex my-xl-auto right-content align-items-center flex-wrap gap-2">
 
                 <div>
-                    <a href="{{ route('automation-rule.create') }}" class="btn btn-primary d-flex align-items-center">
-                        <i class="isax isax-add-circle5 me-1"></i> Add Automation Rule
+                    <a href="{{ route('leave-policy.create') }}" class="btn btn-primary d-flex align-items-center">
+                        <i class="isax isax-add-circle5 me-1"></i> Add Leave Policies
                     </a>
                 </div>
             </div>
@@ -77,7 +77,7 @@
                     $('.dataTables_filter').appendTo('.search-input');
                 },
                 "ajax": {
-                    "url": "{{ route('automation-rule.index') }}",
+                    "url": "{{ route('leave-policy.index') }}",
                     "type": "GET"
                 }
             });

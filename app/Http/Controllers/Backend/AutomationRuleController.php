@@ -35,7 +35,7 @@ class AutomationRuleController extends Controller
         $request->validate($validatedData['rules']);
         
         DB::beginTransaction();
-        
+
         try {
             $automationRule = new AutomationRule();
             $automationRule->business_id = auth()->user()->getParentBusiness()->id;
@@ -43,6 +43,8 @@ class AutomationRuleController extends Controller
             $automationRule->save();
 
             $this->saver($automationRule, $request);
+
+            DB::commit();
 
             return response()->json([
                 'success' => true,
@@ -60,24 +62,57 @@ class AutomationRuleController extends Controller
     }
     
     public function edit(Request $request, $id){
-        $rule  = AutomationRule::find($id);
-        return view('backend.automation-rules.edit', compact('rule'));
+        $rule  = AutomationRule::with('rules')->find($id);
+
+        $formattedRules = [];
+        foreach($rule->rules as $ruleItem){
+            $hourMinute = hour_minute($ruleItem->hour_minute);
+            
+            $formattedRules[$ruleItem->rule_type][] = [
+                'hours' => $hourMinute[0],
+                'minutes' => $hourMinute[1],
+                'type' => $ruleItem->type,
+                'amount' => $ruleItem->amount
+            ];
+        }
+
+        return view('backend.automation-rules.edit', compact('rule', 'formattedRules'));
     }
     
     public function update(Request $request, $id){
-        $rule = AutomationRule::find($id);
-        $rule->name = $request->name;
-        $rule->save();
+        $validatedData = $this->rules($request);
+        $request->validate($validatedData['rules']);
         
-        return response()->json([
-            'success' => true,
-            'message' => 'Automation rule updated successfully',
-            'redirect_url' => route('automation-rule.index')
-        ]);
+        DB::beginTransaction();
+                    
+        try {
+            $automationRule = AutomationRule::find($id);
+            $automationRule->fill($validatedData['data']);
+            $automationRule->save();
+
+            $automationRule->rules()->delete();
+            $this->saver($automationRule, $request);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Automation Rule updated successfully',
+                'redirect_url' => route('automation-rule.index')
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Automation Rule update failed: ' . $e->getMessage()
+            ], 500);
+        }
     }
     
     public function destroy(Request $request, $id){
         $rule = AutomationRule::findOrFail($id);
+        $rule->rules()->delete();
         $rule->delete();
         
         return redirect()->route('backend.automation-rules.index')->with('success', 'Automation rule deleted successfully');
@@ -288,13 +323,13 @@ class AutomationRuleController extends Controller
         }
 
         if($automationRule->late_entry_deductions_2){
-            foreach($request->late_deduction_1_rules_hours ?? [] as $indexL0 => $hourL0){
+            foreach($request->late_deduction_2_rules_hours ?? [] as $indexL0 => $hourL0){
                 foreach($hourL0 as $index => $hour){
                     $automationRule->rules()->create([
                         'rule_type' => 'late_entry_deductions_2',
                         'hour_minute' => $hour . ':' . $request->late_deduction_2_rules_minutes[$indexL0][$index],
                         'type' => Constants::DEDUCTION_AMOUNT_TYPE_MULTIPLIER,
-                        'amount' => 1,
+                        'amount' => 0.5,
                     ]);
                 }
             }
@@ -333,7 +368,7 @@ class AutomationRuleController extends Controller
                         'rule_type' => 'early_exit_deductions_2',
                         'hour_minute' => $hour . ':' . $request->early_exit_deduction_2_rules_minutes[$indexL0][$index],
                         'type' => Constants::DEDUCTION_AMOUNT_TYPE_MULTIPLIER,
-                        'amount' => 1,
+                        'amount' => 0.5,
                     ]);
                 }
             }
@@ -372,7 +407,7 @@ class AutomationRuleController extends Controller
                         'rule_type' => 'break_rules_2',
                         'hour_minute' => $hour . ':' . $request->break_rule_2_rules_minutes[$indexL0][$index],
                         'type' => Constants::DEDUCTION_AMOUNT_TYPE_MULTIPLIER,
-                        'amount' => 1,
+                        'amount' => 0.5,
                     ]);
                 }
             }
@@ -411,7 +446,7 @@ class AutomationRuleController extends Controller
                         'rule_type' => 'overtime_rules_2',
                         'hour_minute' => $hour . ':' . $request->overtime_rule_2_rules_minutes[$indexL0][$index],
                         'type' => Constants::DEDUCTION_AMOUNT_TYPE_MULTIPLIER,
-                        'amount' => 1,
+                        'amount' => 0.5,
                     ]);
                 }
             }
@@ -450,7 +485,7 @@ class AutomationRuleController extends Controller
                         'rule_type' => 'early_overtime_rules_2',
                         'hour_minute' => $hour . ':' . $request->early_overtime_rule_2_rules_minutes[$indexL0][$index],
                         'type' => Constants::DEDUCTION_AMOUNT_TYPE_MULTIPLIER,
-                        'amount' => 1,
+                        'amount' => 0.5,
                     ]);
                 }
             }

@@ -442,6 +442,8 @@
                                     <li><a href="{{ route('attendance-template.index') }}" class="">Attendance Template</a></li>
                                     <li><a href="{{ route('attendance-geofence.index') }}" class="">Geofence</a></li>
                                     <li><a href="{{ route('shift-template.index') }}" class="">Shift Template</a></li>
+                                    <li><a href="{{ route('automation-rule.index') }}" class="">Automation Rule</a></li>
+                                    <li><a href="{{ route('holiday-template.index') }}" class="">Holiday Template</a></li>
                                 </ul>
                             </li>
 

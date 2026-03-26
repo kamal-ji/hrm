@@ -5,13 +5,13 @@
     <div class="content content-two">
         <div class="d-flex d-block align-items-center justify-content-between flex-wrap gap-3 mb-3">
             <div>
-                <h6>📦 Automation Rules</h6>
+                <h6>📦 Holiday Template List</h6>
             </div>
             <div class="d-flex my-xl-auto right-content align-items-center flex-wrap gap-2">
 
                 <div>
-                    <a href="{{ route('automation-rule.create') }}" class="btn btn-primary d-flex align-items-center">
-                        <i class="isax isax-add-circle5 me-1"></i> Add Automation Rule
+                    <a href="{{ route('holiday-template.create') }}" class="btn btn-primary d-flex align-items-center">
+                        <i class="isax isax-add-circle5 me-1"></i> Add Holiday Template
                     </a>
                 </div>
             </div>
@@ -23,6 +23,7 @@
                 <thead class="thead-light">
                     <tr>
                         <th class="no-sort">Name</th>
+                        <th class="no-sort">Year</th>
                         <th class="no-sort"></th>
                     </tr>
                 </thead>
@@ -68,6 +69,10 @@
                         "orderable": false
                     },
                     {
+                        "data": "selected_year",
+                        "orderable": false
+                    },
+                    {
                         "data": "actions",
                         "orderable": false
                     }
@@ -77,7 +82,7 @@
                     $('.dataTables_filter').appendTo('.search-input');
                 },
                 "ajax": {
-                    "url": "{{ route('automation-rule.index') }}",
+                    "url": "{{ route('holiday-template.index') }}",
                     "type": "GET"
                 }
             });

@@ -331,6 +331,43 @@ class Constants
         ];
     }
 
+    const LEAVE_POLICY_CYCLE_MONTHLY = 1;
+    const LEAVE_POLICY_CYCLE_ANNUALLY = 2;
+
+    public static function getLeavePolicyCycles(){
+        return [
+            [
+                'id' => self::LEAVE_POLICY_CYCLE_MONTHLY,
+                'name' => 'Monthly',
+            ],
+            [
+                'id' => self::LEAVE_POLICY_CYCLE_ANNUALLY,
+                'name' => 'Annually',
+            ],
+        ];
+    }
+
+    const LEAVE_POLICY_UNUSED_LEAVE_RULE_EXPIRE = 1;
+    const LEAVE_POLICY_UNUSED_LEAVE_RULE_CARRY_FORWARD = 2;
+    const LEAVE_POLICY_UNUSED_LEAVE_RULE_ENCASH = 3;
+
+    public static function getLeavePolicyUnusedLeaveRules(){
+        return [
+            [
+                'id' => self::LEAVE_POLICY_UNUSED_LEAVE_RULE_EXPIRE,
+                'name' => 'Expire',
+            ],
+            [
+                'id' => self::LEAVE_POLICY_UNUSED_LEAVE_RULE_CARRY_FORWARD,
+                'name' => 'Carry Forward',
+            ],
+            [
+                'id' => self::LEAVE_POLICY_UNUSED_LEAVE_RULE_ENCASH,
+                'name' => 'Encashment',
+            ]
+        ];
+    }
+
     public static function getName($type, $code, $default = null){
         $array = [];
 
@@ -376,6 +413,12 @@ class Constants
                 break;
             case 'early_overtime':
                 $array = self::getEarlyOvertimePayTypes();
+                break;
+            case 'leave_policy_cycle':
+                $array = self::getLeavePolicyCycles();
+                break;
+            case 'leave_policy_unused_leave_rule':
+                $array = self::getLeavePolicyUnusedLeaveRules();
                 break;
         }
 

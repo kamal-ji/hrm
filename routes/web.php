@@ -3,17 +3,18 @@
 use App\Http\Controllers\Backend\AllowanceController;
 use App\Http\Controllers\Backend\AttendanceGeofenceController;
 use App\Http\Controllers\Backend\AttendanceTemplateController;
+use App\Http\Controllers\Backend\AutomationRuleController;
 use App\Http\Controllers\Backend\BusinessController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\DeductionController;
 use App\Http\Controllers\Backend\DepartmentController;
 use App\Http\Controllers\Backend\DesignationController;
 use App\Http\Controllers\Backend\EmployeeController;
+use App\Http\Controllers\Backend\HolidayTemplateController;
 use App\Http\Controllers\Backend\ImpersonationController;
 use App\Http\Controllers\Backend\ProfileController;
-use App\Http\Controllers\Backend\StaffController;
 use App\Http\Controllers\Backend\ShiftTemplateController;
-use App\Http\Controllers\Backend\AutomationRuleController;
+use App\Http\Controllers\Backend\StaffController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\Web\AuthController;
 use Illuminate\Support\Facades\Route;
@@ -148,6 +149,15 @@ Route::middleware(['auth', 'role:admin|member|employee|staff|business_owner'])->
         Route::get('/{id}/edit', [AutomationRuleController::class, 'edit'])->name('automation-rule.edit');
         Route::get('/{id}/delete', [AutomationRuleController::class, 'destroy'])->name('automation-rule.destroy');
         Route::put('/{id}', [AutomationRuleController::class, 'update'])->name('automation-rule.update');
+    });
+
+    Route::prefix('holiday-template')->group(function(){
+        Route::get('/', [HolidayTemplateController::class, 'index'])->name('holiday-template.index');
+        Route::get('/create', [HolidayTemplateController::class, 'create'])->name('holiday-template.create');
+        Route::post('/', [HolidayTemplateController::class, 'store'])->name('holiday-template.store');
+        Route::get('/{id}/edit', [HolidayTemplateController::class, 'edit'])->name('holiday-template.edit');
+        Route::get('/{id}/delete', [HolidayTemplateController::class, 'destroy'])->name('holiday-template.destroy');
+        Route::put('/{id}', [HolidayTemplateController::class, 'update'])->name('holiday-template.update');
     });
 });
 
